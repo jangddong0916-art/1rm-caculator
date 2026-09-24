@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google AdSense: 승인 후 ca-pub-0000000000000000 을 실제 발행자 ID로 교체하세요 -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1RM 계산기 — 스쿼트·벤치프레스·데드리프트 최대 중량 계산</title>
+<meta name="description" content="무게와 반복 횟수만 입력하면 Epley·Brzycki 공식으로 1RM을 계산하고, 스트렝스 레벨과 목적별(파워리프팅·근비대·근지구력) 훈련 프로그램까지 무료로 확인할 수 있는 1RM 계산기입니다.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://your-domain.com/">
+<meta property="og:type" content="website">
+<link rel="alternate" hreflang="ko" href="https://your-domain.com/">
+<link rel="alternate" hreflang="en" href="https://your-domain.com/en.html">
+<link rel="alternate" hreflang="zh" href="https://your-domain.com/zh.html">
+<link rel="alternate" hreflang="x-default" href="https://your-domain.com/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="1RM 계산기 — 당신의 진짜 무게를 확인하세요">
+<meta property="og:description" content="Epley·Brzycki 공식 기반 1RM 계산, 스트렝스 레벨 백분위, 목적별 훈련 프로그램을 한 번에 확인하세요.">
+<meta property="og:url" content="https://your-domain.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1RM 계산기">
+<meta name="twitter:description" content="Epley·Brzycki 공식 기반 1RM 계산과 스트렝스 레벨, 목적별 훈련 프로그램 계산기.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23e3432a' stroke-width='5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14161a;
+    --bg-raise: #191c21;
+    --surface: #1d2027;
+    --surface-2: #242830;
+    --border: #33383f;
+    --border-soft: #282c33;
+    --text: #edeef0;
+    --text-dim: #9298a3;
+    --text-faint: #676d78;
+    --accent: #e3432a;
+    --accent-dim: #7a2a1f;
+    --accent-glow: rgba(227,67,42,0.18);
+
+    --lvl-1: #6d7480; /* 운동안함 */
+    --lvl-2: #4c93d6; /* 입문 */
+    --lvl-3: #3fb87f; /* 중급 */
+    --lvl-4: #e08a2c; /* 고급 */
+    --lvl-5: #d4af37; /* 보디빌더 */
+
+    --power: #e3432a;
+    --power-bg: rgba(227,67,42,0.10);
+    --hyper: #3f7fe0;
+    --hyper-bg: rgba(63,127,224,0.10);
+    --endur: #3fb87f;
+    --endur-bg: rgba(63,184,127,0.10);
+
+    --radius: 6px;
+    --font-display: 'Oswald', 'Inter', sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{ display:block; max-width:100%; }
+  button{ font-family:inherit; }
+  input,select,button{ font-family:inherit; color:inherit; }
+
+  a{ color:var(--accent); }
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+  }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px;
+  }
+
+  /* ---------- Header ---------- */
+  .site-header{
+    padding:44px 0 36px;
+    border-bottom:1px solid var(--border-soft);
+    background:
+      radial-gradient(circle at 88% 20%, var(--accent-glow), transparent 55%),
+      var(--bg-raise);
+  }
+  .site-header .wrap{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .eyebrow-mark{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--text-faint);
+    font-size:13px;
+    margin-bottom:4px;
+  }
+  .eyebrow-mark .plate{
+    width:16px; height:16px; border-radius:50%;
+    border:3px solid var(--accent);
+    flex:none;
+  }
+  .site-header h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(34px, 6vw, 54px);
+    letter-spacing:0.5px;
+    margin:0;
+    line-height:1.05;
+  }
+  .site-header p{
+    margin:6px 0 0;
+    color:var(--text-dim);
+    font-size:16px;
+    max-width:56ch;
+  }
+
+  main{ padding:36px 0 80px; }
+  section + section{ margin-top:56px; }
+
+  .section-head{ margin-bottom:18px; }
+  .section-head h2{
+    font-family:var(--font-display);
+    font-size:24px;
+    font-weight:600;
+    margin:0 0 4px;
+    letter-spacing:0.2px;
+  }
+  .section-head p{
+    margin:0;
+    color:var(--text-dim);
+    font-size:14.5px;
+    max-width:60ch;
+  }
+
+  /* ---------- Layout: calculator ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width:880px){
+    .layout{ grid-template-columns:1fr; }
+  }
+
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    padding:22px;
+  }
+  .input-panel{ position:sticky; top:20px; }
+  @media (max-width:880px){ .input-panel{ position:static; } }
+
+  .field{ margin-bottom:18px; }
+  .field:last-child{ margin-bottom:0; }
+  .field label{
+    display:block;
+    font-size:13.5px;
+    color:var(--text-dim);
+    margin-bottom:7px;
+  }
+  .field input[type="text"],
+  .field input[type="number"]{
+    width:100%;
+    background:var(--bg-raise);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:11px 12px;
+    color:var(--text);
+    font-size:16px;
+  }
+  .field input:focus{ border-color:var(--accent); }
+
+  .exercise-toggle{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .exercise-toggle button{
+    background:var(--bg-raise);
+    border:1px solid var(--border);
+    border-radius:4px;
+    color:var(--text-dim);
+    padding:11px 8px;
+    font-size:14px;
+    cursor:pointer;
+    text-align:center;
+  }
+  .exercise-toggle button.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+
+  .unit-toggle, .seg-toggle{
+    display:inline-flex;
+    border:1px solid var(--border);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .unit-toggle button, .seg-toggle button{
+    background:var(--bg-raise);
+    border:none;
+    color:var(--text-dim);
+    padding:9px 16px;
+    font-size:14px;
+    cursor:pointer;
+    border-right:1px solid var(--border);
+  }
+  .unit-toggle button:last-child, .seg-toggle button:last-child{ border-right:none; }
+  .unit-toggle button.active, .seg-toggle button.active{
+    background:var(--accent);
+    color:#fff;
+  }
+
+  .weight-row{ display:flex; gap:10px; align-items:stretch; }
+  .weight-row input{ flex:1; min-width:0; }
+
+  .reps-row{ display:flex; align-items:center; gap:14px; }
+  .reps-row input[type="range"]{ flex:1; accent-color:var(--accent); }
+  .reps-badge{
+    font-family:var(--font-display);
+    font-size:22px;
+    min-width:44px;
+    text-align:center;
+    background:var(--bg-raise);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:6px 0;
+  }
+
+  .exercise-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-size:12.5px;
+    color:var(--text-faint);
+  }
+
+  /* ---------- Results ---------- */
+  .results-panel{ display:flex; flex-direction:column; gap:20px; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    padding:24px;
+  }
+
+  .one-rm-card{
+    position:relative;
+    overflow:hidden;
+    padding:28px 24px;
+  }
+  .one-rm-card::before{
+    content:"";
+    position:absolute;
+    right:-40px; top:50%;
+    width:220px; height:220px;
+    transform:translateY(-50%);
+    border-radius:50%;
+    border:14px solid var(--border-soft);
+    opacity:0.5;
+  }
+  .one-rm-card .label{
+    color:var(--text-dim);
+    font-size:14px;
+    margin-bottom:2px;
+  }
+  .one-rm-card .value{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(48px, 8vw, 76px);
+    line-height:1;
+    color:var(--text);
+    position:relative;
+    z-index:1;
+  }
+  .one-rm-card .value span{
+    font-size:0.35em;
+    color:var(--text-dim);
+    font-weight:500;
+    margin-left:6px;
+  }
+  .formula-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    margin-top:16px;
+    position:relative;
+    z-index:1;
+  }
+  .formula-breakdown{
+    margin-top:16px;
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+    font-size:13.5px;
+    color:var(--text-dim);
+    position:relative;
+    z-index:1;
+  }
+  .formula-breakdown b{ color:var(--text); font-weight:600; }
+
+  /* ---------- Rep table ---------- */
+  .rep-table-card h3{
+    font-family:var(--font-display);
+    font-size:18px;
+    font-weight:600;
+    margin:0 0 14px;
+  }
+  .rep-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:8px;
+  }
+  @media (max-width:560px){
+    .rep-grid{ grid-template-columns:repeat(3, 1fr); }
+  }
+  .rep-cell{
+    background:var(--bg-raise);
+    border:1px solid var(--border-soft);
+    border-radius:4px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .rep-cell.is-input{
+    border-color:var(--accent);
+    background:var(--accent-glow);
+  }
+  .rep-cell .rn{
+    font-size:12px;
+    color:var(--text-faint);
+  }
+  .rep-cell .rw{
+    font-family:var(--font-display);
+    font-size:19px;
+    margin-top:2px;
+  }
+
+  /* ---------- Strength level ---------- */
+  .level-card{ display:grid; grid-template-columns:280px 1fr; gap:28px; }
+  @media (max-width:760px){ .level-card{ grid-template-columns:1fr; } }
+
+  .level-inputs .field{ margin-bottom:16px; }
+
+  .level-result .badge-row{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .level-badge{
+    font-family:var(--font-display);
+    font-size:26px;
+    font-weight:600;
+    padding:4px 14px 6px;
+    border-radius:4px;
+    color:#14161a;
+  }
+  .ratio-note{ color:var(--text-dim); font-size:14px; }
+
+  .gauge{
+    margin:20px 0 8px;
+  }
+  .gauge-track{
+    position:relative;
+    height:10px;
+    border-radius:6px;
+    background:var(--bg-raise);
+    border:1px solid var(--border-soft);
+    overflow:hidden;
+  }
+  .gauge-fill{
+    position:absolute; left:0; top:0; bottom:0;
+    border-radius:6px 0 0 6px;
+    transition:width 0.4s ease;
+  }
+  .gauge-labels{
+    display:flex;
+    justify-content:space-between;
+    font-size:11.5px;
+    color:var(--text-faint);
+    margin-top:6px;
+  }
+
+  .percentile-line{
+    font-size:15px;
+    margin-top:14px;
+  }
+  .percentile-line b{ color:var(--text); font-family:var(--font-display); font-size:20px; }
+
+  .motivate-box{
+    margin-top:16px;
+    padding:14px 16px;
+    background:var(--bg-raise);
+    border-left:3px solid var(--accent);
+    border-radius:0 4px 4px 0;
+    font-size:14.5px;
+    color:var(--text);
+  }
+
+  .share-btn{
+    margin-top:18px;
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--text-dim);
+    padding:9px 16px;
+    border-radius:4px;
+    font-size:13.5px;
+    cursor:pointer;
+  }
+  .share-btn:hover{ border-color:var(--accent); color:var(--text); }
+
+  /* ---------- Training programs ---------- */
+  .program-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+  }
+  .program-tabs button{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    color:var(--text-dim);
+    padding:10px 18px;
+    border-radius:4px;
+    font-size:14.5px;
+    cursor:pointer;
+  }
+  .program-tabs button.active[data-p="power"]{ background:var(--power); border-color:var(--power); color:#fff; }
+  .program-tabs button.active[data-p="hyper"]{ background:var(--hyper); border-color:var(--hyper); color:#fff; }
+  .program-tabs button.active[data-p="endur"]{ background:var(--endur); border-color:var(--endur); color:#fff; }
+
+  .program-detail{
+    border-radius:var(--radius);
+    border:1px solid var(--border-soft);
+    padding:26px;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:20px;
+  }
+  @media (max-width:720px){
+    .program-detail{ grid-template-columns:1fr 1fr; }
+  }
+  .program-detail .stat .stat-label{ font-size:13px; color:var(--text-dim); margin-bottom:4px; }
+  .program-detail .stat .stat-value{
+    font-family:var(--font-display);
+    font-size:26px;
+    font-weight:600;
+  }
+  .program-detail .stat .stat-sub{ font-size:12.5px; color:var(--text-faint); margin-top:2px; }
+  .program-desc{
+    grid-column:1 / -1;
+    margin-top:6px;
+    padding-top:18px;
+    border-top:1px solid var(--border-soft);
+    font-size:14.5px;
+    color:var(--text-dim);
+  }
+  .program-desc b{ color:var(--text); }
+
+  .compare-toggle{
+    margin-top:20px;
+    background:none;
+    border:none;
+    color:var(--text-dim);
+    text-decoration:underline;
+    font-size:13.5px;
+    cursor:pointer;
+    padding:0;
+  }
+  .compare-table{
+    margin-top:20px;
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  .compare-table th, .compare-table td{
+    border:1px solid var(--border-soft);
+    padding:10px 12px;
+    text-align:left;
+  }
+  .compare-table th{
+    background:var(--surface-2);
+    color:var(--text-dim);
+    font-weight:600;
+    font-size:13px;
+  }
+  .compare-table td.metric{ color:var(--text-dim); font-size:13px; }
+
+  .faq-panel{ padding:6px 22px; }
+  .faq-item{ border-bottom:1px solid var(--border-soft); padding:16px 0; }
+  .faq-item:last-child{ border-bottom:none; }
+  .faq-item summary{
+    cursor:pointer;
+    font-family:var(--font-display);
+    font-size:16.5px;
+    font-weight:500;
+    list-style:none;
+    position:relative;
+    padding-right:24px;
+  }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item summary::after{
+    content:"+";
+    position:absolute; right:0; top:0;
+    color:var(--accent);
+    font-size:18px;
+  }
+  .faq-item[open] summary::after{ content:"–"; }
+  .faq-item p{
+    margin:12px 0 0;
+    color:var(--text-dim);
+    font-size:14.5px;
+    line-height:1.6;
+  }
+
+  footer{
+    border-top:1px solid var(--border-soft);
+    padding:26px 0 60px;
+    color:var(--text-faint);
+    font-size:12.5px;
+  }
+  footer p{ margin:0 0 8px; }
+  footer .footer-links{ margin-bottom:0; }
+  footer a{ color:var(--text-dim); }
+  footer a:hover{ color:var(--accent); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "1RM 계산기",
+  "url": "https://your-domain.com/",
+  "description": "Epley·Brzycki 공식으로 1RM을 계산하고 스트렝스 레벨과 목적별 훈련 프로그램을 제공하는 무료 웹 계산기.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "inLanguage": "ko"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "1RM이란 무엇인가요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "1RM은 한 번에 들 수 있는 최대 중량을 뜻합니다. 직접 최고 중량에 도전하지 않아도 가벼운 무게로 여러 번 반복한 기록을 공식에 대입해 추정할 수 있습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "Epley 공식과 Brzycki 공식은 어떻게 다른가요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "두 공식 모두 무게와 반복 횟수로 1RM을 추정하지만 계산 방식이 조금씩 달라 결과에 소폭 차이가 납니다. 이 계산기는 두 값을 함께 보여주고 평균값도 함께 제공합니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "반복 횟수가 많을수록 1RM 추정치는 부정확해지나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "네. 일반적으로 1~5회 사이의 반복으로 계산할 때 추정 정확도가 가장 높고, 반복 횟수가 늘어날수록 실제 1RM과의 오차가 커질 수 있습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "스트렝스 레벨은 어떻게 정해지나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "체중 대비 든 무게의 비율을 널리 쓰이는 체급별 기준과 비교해 추정한 값으로, 실제 대회 기록이나 개인차에 따라 다를 수 있는 참고용 지표입니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "계산기에 입력한 정보가 저장되나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "아니요. 입력한 무게, 반복 횟수, 체중 등은 서버로 전송되지 않고 사용하는 브라우저 안에서만 계산에 사용됩니다." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="eyebrow-mark"><span class="plate"></span> 스트렝스 트레이닝 도구</div>
+    <h1>1RM 계산기</h1>
+    <p>무게와 반복 횟수만 입력하면 1회 최대 중량을 추정하고, 같은 체급 안에서 당신의 위치와 다음 목표까지의 거리를 보여줍니다.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= CALCULATOR ================= -->
+  <section id="calculator">
+    <div class="section-head">
+      <h2>1RM 계산</h2>
+      <p>운동 종목, 무게, 반복 횟수를 입력하면 실시간으로 계산됩니다.</p>
+    </div>
+
+    <div class="layout">
+      <div class="panel input-panel">
+        <div class="field">
+          <label>운동 종목</label>
+          <div class="exercise-toggle" id="exercise-toggle">
+            <button type="button" data-exercise="스쿼트" data-cat="squat" class="active">스쿼트</button>
+            <button type="button" data-exercise="벤치프레스" data-cat="bench">벤치프레스</button>
+            <button type="button" data-exercise="데드리프트" data-cat="deadlift">데드리프트</button>
+            <button type="button" data-exercise="밀리터리프레스" data-cat="ohp">밀리터리프레스</button>
+          </div>
+          <span class="exercise-tag" id="exercise-tag"></span>
+        </div>
+
+        <div class="field">
+          <label for="weight">무게</label>
+          <div class="weight-row">
+            <input type="number" id="weight" value="100" min="0" step="0.5">
+            <div class="unit-toggle" id="unit-toggle">
+              <button type="button" data-unit="kg" class="active">kg</button>
+              <button type="button" data-unit="lb">lb</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="reps">반복 횟수 (1~12회)</label>
+          <div class="reps-row">
+            <input type="range" id="reps" min="1" max="12" value="5">
+            <div class="reps-badge" id="reps-badge">5</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>계산 공식</label>
+          <div class="seg-toggle" id="formula-toggle">
+            <button type="button" data-formula="avg" class="active">평균</button>
+            <button type="button" data-formula="epley">Epley</button>
+            <button type="button" data-formula="brzycki">Brzycki</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-panel">
+        <div class="card one-rm-card">
+          <div class="label">예상 1RM (<span id="exercise-echo">스쿼트</span>)</div>
+          <div class="value" id="one-rm-value">100<span id="one-rm-unit">kg</span></div>
+          <div class="formula-breakdown">
+            <span>Epley: <b id="epley-val">–</b></span>
+            <span>Brzycki: <b id="brzycki-val">–</b></span>
+          </div>
+        </div>
+
+        <div class="card rep-table-card">
+          <h3>1RM ~ 12RM 예상 중량</h3>
+          <div class="rep-grid" id="rep-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STRENGTH LEVEL ================= -->
+  <section id="strength-level">
+    <div class="section-head">
+      <h2>스트렝스 레벨</h2>
+      <p>성별과 체중을 입력하면 같은 조건의 다른 사람들과 비교한 대략적인 위치를 추정합니다. 참고용 추정치입니다.</p>
+    </div>
+
+    <div class="panel level-card">
+      <div class="level-inputs">
+        <div class="field">
+          <label>성별</label>
+          <div class="seg-toggle" id="gender-toggle">
+            <button type="button" data-gender="male" class="active">남성</button>
+            <button type="button" data-gender="female">여성</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="bodyweight">체중</label>
+          <div class="weight-row">
+            <input type="number" id="bodyweight" value="75" min="1" step="0.5">
+            <div class="unit-toggle" id="bw-unit-toggle">
+              <button type="button" data-bwunit="kg" class="active">kg</button>
+              <button type="button" data-bwunit="lb">lb</button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="share-btn" id="share-btn">결과 복사하기</button>
+      </div>
+
+      <div class="level-result">
+        <div class="badge-row">
+          <span class="level-badge" id="level-badge">–</span>
+          <span class="ratio-note" id="ratio-note">체중 대비 –배</span>
+        </div>
+
+        <div class="gauge">
+          <div class="gauge-track">
+            <div class="gauge-fill" id="gauge-fill"></div>
+          </div>
+          <div class="gauge-labels">
+            <span>운동안함</span><span>입문</span><span>중급</span><span>고급</span><span>보디빌더</span>
+          </div>
+        </div>
+
+        <div class="percentile-line">상위 <b id="percentile-val">–</b> 에 해당하는 기록입니다</div>
+
+        <div class="motivate-box" id="motivate-box">입력값을 확인해주세요.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRAINING PROGRAMS ================= -->
+  <section id="training">
+    <div class="section-head">
+      <h2>목적별 훈련 프로그램</h2>
+      <p>계산된 1RM을 기준으로 목적에 맞는 무게와 반복·세트 수를 자동으로 계산합니다.</p>
+    </div>
+
+    <div class="program-tabs">
+      <button type="button" data-p="power" class="active">파워리프팅 (근력)</button>
+      <button type="button" data-p="hyper">근비대</button>
+      <button type="button" data-p="endur">근지구력</button>
+    </div>
+
+    <div class="program-detail" id="program-detail"></div>
+
+    <button type="button" class="compare-toggle" id="compare-toggle">세 가지 방식 한눈에 비교하기</button>
+
+    <table class="compare-table" id="compare-table" style="display:none;">
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th style="color:var(--power)">파워리프팅</th>
+          <th style="color:var(--hyper)">근비대</th>
+          <th style="color:var(--endur)">근지구력</th>
+        </tr>
+      </thead>
+      <tbody id="compare-body"></tbody>
+    </table>
+  </section>
+
+  <!-- 광고 위치 1: 애드센스 승인 후 아래 주석을 해제하고 data-ad-slot 값을 실제 광고 단위 ID로 교체하세요.
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-0000000000000000"
+       data-ad-slot="0000000000"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+
+  <!-- ================= FAQ ================= -->
+  <section id="faq">
+    <div class="section-head">
+      <h2>자주 묻는 질문</h2>
+      <p>1RM 계산과 관련해 자주 나오는 질문을 정리했습니다.</p>
+    </div>
+    <div class="panel faq-panel">
+      <details class="faq-item">
+        <summary>1RM이란 무엇인가요?</summary>
+        <p>1RM은 한 번에 들 수 있는 최대 중량을 뜻합니다. 직접 최고 중량에 도전하지 않아도 가벼운 무게로 여러 번 반복한 기록을 공식에 대입해 추정할 수 있습니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Epley 공식과 Brzycki 공식은 어떻게 다른가요?</summary>
+        <p>두 공식 모두 무게와 반복 횟수로 1RM을 추정하지만 계산 방식이 조금씩 달라 결과에 소폭 차이가 납니다. 이 계산기는 두 값을 함께 보여주고 평균값도 함께 제공합니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>반복 횟수가 많을수록 1RM 추정치는 부정확해지나요?</summary>
+        <p>네. 일반적으로 1~5회 사이의 반복으로 계산할 때 추정 정확도가 가장 높고, 반복 횟수가 늘어날수록 실제 1RM과의 오차가 커질 수 있습니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>스트렝스 레벨은 어떻게 정해지나요?</summary>
+        <p>체중 대비 든 무게의 비율을 널리 쓰이는 체급별 기준과 비교해 추정한 값으로, 실제 대회 기록이나 개인차에 따라 다를 수 있는 참고용 지표입니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>계산기에 입력한 정보가 저장되나요?</summary>
+        <p>아니요. 입력한 무게, 반복 횟수, 체중 등은 서버로 전송되지 않고 사용하는 브라우저 안에서만 계산에 사용됩니다.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 광고 위치 2: 애드센스 승인 후 아래 주석을 해제하고 data-ad-slot 값을 실제 광고 단위 ID로 교체하세요.
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-0000000000000000"
+       data-ad-slot="0000000001"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>1RM 및 스트렝스 레벨은 공식 기반의 추정치이며, 실제 최대 중량 및 상대적 위치와 차이가 있을 수 있습니다. 고중량 시도 시 반드시 스포터와 함께 안전하게 진행하세요.</p>
+    <p class="footer-links"><a href="privacy.html">개인정보처리방침</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------------- State ----------------
+  var state = {
+    exercise: "스쿼트",
+    exerciseCat: "squat",
+    weight: 100,
+    unit: "kg",
+    reps: 5,
+    formula: "avg",
+    gender: "male",
+    bodyweight: 75,
+    bwUnit: "kg",
+    program: "power"
+  };
+
+  var KG_PER_LB = 0.45359237;
+  function toKg(v, unit){ return unit === "lb" ? v * KG_PER_LB : v; }
+  function fromKg(v, unit){ return unit === "lb" ? v / KG_PER_LB : v; }
+  function round1(v){ return Math.round(v * 10) / 10; }
+  function roundPlate(v, unit){
+    var step = unit === "lb" ? 5 : 2.5;
+    return Math.round(v / step) * step;
+  }
+  function fmt(v, unit){
+    var val = fromKg(v, unit);
+    return round1(val).toLocaleString("ko-KR", {maximumFractionDigits: 1}) + " " + unit;
+  }
+
+  var CATEGORY_LABEL = {
+    squat: "스쿼트 계열 기준 적용",
+    bench: "벤치프레스 계열 기준 적용",
+    deadlift: "데드리프트 계열 기준 적용",
+    ohp: "밀리터리프레스 계열 기준 적용",
+    general: "일반 종목 기준 적용 (참고용)"
+  };
+
+  // ---------------- Strength standards (bodyweight multiplier) ----------------
+  // [운동안함, 입문, 중급, 고급, 보디빌더]
+  var STANDARDS = {
+    male: {
+      squat:    [0.50, 1.00, 1.50, 2.00, 2.50],
+      bench:    [0.50, 0.75, 1.25, 1.75, 2.00],
+      deadlift: [0.75, 1.25, 1.75, 2.25, 2.75],
+      ohp:      [0.35, 0.55, 0.80, 1.00, 1.20],
+      general:  [0.15, 0.30, 0.50, 0.70, 1.00]
+    },
+    female: {
+      squat:    [0.40, 0.75, 1.15, 1.60, 2.00],
+      bench:    [0.30, 0.50, 0.75, 1.00, 1.25],
+      deadlift: [0.55, 0.95, 1.35, 1.75, 2.15],
+      ohp:      [0.20, 0.35, 0.50, 0.65, 0.80],
+      general:  [0.35, 0.60, 0.90, 1.20, 1.50]
+    }
+  };
+  var LEVEL_NAMES = ["운동안함", "입문", "중급", "고급", "보디빌더"];
+  var LEVEL_COLORS = ["var(--lvl-1)", "var(--lvl-2)", "var(--lvl-3)", "var(--lvl-4)", "var(--lvl-5)"];
+  var LEVEL_PCT_POINTS = [5, 30, 55, 80, 97];
+
+  function calcPercentile(ratio, thresholds){
+    var points = [[0,0],[thresholds[0],LEVEL_PCT_POINTS[0]],[thresholds[1],LEVEL_PCT_POINTS[1]],
+                  [thresholds[2],LEVEL_PCT_POINTS[2]],[thresholds[3],LEVEL_PCT_POINTS[3]],
+                  [thresholds[4],LEVEL_PCT_POINTS[4]]];
+    if(ratio >= thresholds[4]){
+      var extra = ratio - thresholds[4];
+      var pct = 97 + (99.9 - 97) * (1 - Math.exp(-extra * 2));
+      return Math.min(pct, 99.9);
+    }
+    for(var i=0;i<points.length-1;i++){
+      var x0=points[i][0], y0=points[i][1], x1=points[i+1][0], y1=points[i+1][1];
+      if(ratio >= x0 && ratio <= x1){
+        if(x1 === x0) return y1;
+        return y0 + (y1-y0) * (ratio-x0)/(x1-x0);
+      }
+    }
+    return 0;
+  }
+  function getLevelIndex(ratio, thresholds){
+    var idx = -1;
+    for(var i=0;i<thresholds.length;i++){
+      if(ratio >= thresholds[i]) idx = i;
+    }
+    return idx;
+  }
+
+  // ---------------- 1RM formulas ----------------
+  function epley1RM(w, r){ return r <= 1 ? w : w * (1 + r/30); }
+  function brzycki1RM(w, r){ return r <= 1 ? w : w * 36 / (37 - r); }
+  function epleyWeightAt(oneRM, r){ return r <= 1 ? oneRM : oneRM / (1 + r/30); }
+  function brzyckiWeightAt(oneRM, r){ return r <= 1 ? oneRM : oneRM * (37 - r) / 36; }
+
+  // ---------------- Training program definitions ----------------
+  var PROGRAMS = {
+    power: {
+      label: "파워리프팅 (근력형)", color: "var(--power)",
+      pct: [85, 95], reps: [1, 5], sets: [3, 6], rest: "3~5분",
+      desc: "고중량·저반복 방식으로 신경계 적응과 최대 근력 향상에 집중합니다. 세트마다 완전한 회복을 위해 휴식을 충분히 가져가고, 동일한 중량대를 주 1~2회 빈도로 다루는 것이 일반적입니다. 테크닉이 무너질 정도의 고중량은 피하세요."
+    },
+    hyper: {
+      label: "근비대형 (하이퍼트로피)", color: "var(--hyper)",
+      pct: [65, 80], reps: [8, 12], sets: [3, 5], rest: "60~90초",
+      desc: "중강도·중반복으로 근육에 가해지는 총 볼륨을 늘려 근성장을 유도합니다. 세트 간 휴식을 짧게 가져가며 근육의 펌핑감(대사 스트레스)을 느끼는 것이 포인트입니다. 주 2~3회 분할로 부위별 훈련하기 좋습니다."
+    },
+    endur: {
+      label: "근지구력형", color: "var(--endur)",
+      pct: [50, 65], reps: [15, null], sets: [2, 4], rest: "30~45초",
+      desc: "저강도·고반복으로 근지구력과 심폐 효율을 높입니다. 휴식 시간을 짧게 유지해 컨디셔닝 효과를 극대화하고, 서킷 형태로 다른 종목과 묶어 진행해도 효과적입니다."
+    }
+  };
+
+  // ---------------- DOM refs ----------------
+  var $ = function(id){ return document.getElementById(id); };
+  var exerciseToggle = $("exercise-toggle");
+  var exerciseTag = $("exercise-tag");
+  var exerciseEcho = $("exercise-echo");
+  var weightInput = $("weight");
+  var repsInput = $("reps");
+  var repsBadge = $("reps-badge");
+  var oneRmValue = $("one-rm-value");
+  var oneRmUnit = $("one-rm-unit");
+  var epleyVal = $("epley-val");
+  var brzyckiVal = $("brzycki-val");
+  var repGrid = $("rep-grid");
+
+  var bodyweightInput = $("bodyweight");
+  var levelBadge = $("level-badge");
+  var ratioNote = $("ratio-note");
+  var gaugeFill = $("gauge-fill");
+  var percentileVal = $("percentile-val");
+  var motivateBox = $("motivate-box");
+
+  var programDetail = $("program-detail");
+  var compareBody = $("compare-body");
+  var compareTable = $("compare-table");
+
+  // ---------------- Core calc ----------------
+  var lastOneRmKg = 0;
+
+  function computeOneRM(){
+    var wKg = toKg(state.weight, state.unit);
+    var r = state.reps;
+    var epley = epley1RM(wKg, r);
+    var brzycki = brzycki1RM(wKg, r);
+    var final;
+    if(state.formula === "epley") final = epley;
+    else if(state.formula === "brzycki") final = brzycki;
+    else final = (epley + brzycki) / 2;
+    return { epley: epley, brzycki: brzycki, final: final };
+  }
+
+  function renderOneRM(){
+    var res = computeOneRM();
+    lastOneRmKg = res.final;
+
+    exerciseTag.textContent = CATEGORY_LABEL[state.exerciseCat];
+    exerciseEcho.textContent = state.exercise || "종목 미입력";
+
+    oneRmValue.childNodes[0].nodeValue = round1(fromKg(res.final, state.unit)).toLocaleString("ko-KR", {maximumFractionDigits:1});
+    oneRmUnit.textContent = state.unit;
+
+    epleyVal.textContent = fmt(res.epley, state.unit);
+    brzyckiVal.textContent = fmt(res.brzycki, state.unit);
+
+    renderRepTable(res.final);
+    renderLevel();
+    renderPrograms();
+  }
+
+  function renderRepTable(oneRMkg){
+    var html = "";
+    for(var r=1; r<=12; r++){
+      var w;
+      if(state.formula === "epley") w = epleyWeightAt(oneRMkg, r);
+      else if(state.formula === "brzycki") w = brzyckiWeightAt(oneRMkg, r);
+      else w = (epleyWeightAt(oneRMkg, r) + brzyckiWeightAt(oneRMkg, r)) / 2;
+
+      var isInput = (r === state.reps) ? " is-input" : "";
+      html += '<div class="rep-cell' + isInput + '">' +
+                '<div class="rn">' + r + 'RM</div>' +
+                '<div class="rw">' + fmt(w, state.unit) + '</div>' +
+              '</div>';
+    }
+    repGrid.innerHTML = html;
+  }
+
+  // ---------------- Strength level ----------------
+  function renderLevel(){
+    var bwKg = toKg(state.bodyweight, state.bwUnit);
+    if(!bwKg || bwKg <= 0 || !lastOneRmKg){
+      levelBadge.textContent = "–";
+      ratioNote.textContent = "체중을 입력해주세요";
+      motivateBox.textContent = "체중을 입력하면 등급이 계산됩니다.";
+      gaugeFill.style.width = "0%";
+      percentileVal.textContent = "–";
+      return;
+    }
+
+    var ratio = lastOneRmKg / bwKg;
+    var cat = state.exerciseCat;
+    var thresholds = STANDARDS[state.gender][cat];
+    var idx = getLevelIndex(ratio, thresholds);
+    var pct = calcPercentile(ratio, thresholds);
+    var levelName = idx >= 0 ? LEVEL_NAMES[idx] : LEVEL_NAMES[0];
+    var levelColor = idx >= 0 ? LEVEL_COLORS[idx] : "var(--lvl-1)";
+
+    levelBadge.textContent = levelName;
+    levelBadge.style.background = levelColor;
+    ratioNote.textContent = "체중 대비 " + ratio.toFixed(2) + "배 (" + CATEGORY_LABEL[cat].replace("적용","") + ")";
+
+    gaugeFill.style.width = Math.min(pct, 100) + "%";
+    gaugeFill.style.background = levelColor;
+    percentileVal.textContent = "상위 " + Math.max(0.1, (100 - pct)).toFixed(1) + "%";
+
+    if(idx >= 4){
+      motivateBox.textContent = "이미 보디빌더 구간에 도달했습니다. 지금의 폼과 관리 루틴을 꾸준히 유지하세요.";
+    } else {
+      var nextIdx = idx + 1;
+      var nextThreshold = thresholds[nextIdx];
+      var neededKg = Math.max(0, nextThreshold * bwKg - lastOneRmKg);
+      var nextName = LEVEL_NAMES[nextIdx];
+      motivateBox.textContent = nextName + " 등급까지 " + fmt(neededKg, state.unit) + " 남았습니다. 조금만 더 밀어붙여 보세요.";
+    }
+  }
+
+  // ---------------- Training programs ----------------
+  function formatRepRange(reps){
+    if(reps[1] === null) return reps[0] + "회 이상";
+    return reps[0] + "~" + reps[1] + "회";
+  }
+  function formatWeightRange(pct){
+    var lo = roundPlate(lastOneRmKg * pct[0] / 100, state.unit);
+    var hi = roundPlate(lastOneRmKg * pct[1] / 100, state.unit);
+    return fmt(lo, state.unit) + " ~ " + fmt(hi, state.unit);
+  }
+
+  function renderPrograms(){
+    var p = PROGRAMS[state.program];
+    if(!lastOneRmKg){
+      programDetail.innerHTML = "";
+      return;
+    }
+    programDetail.style.borderColor = p.color;
+    programDetail.innerHTML =
+      statBlock("목표 무게", formatWeightRange(p.pct), p.pct[0] + "~" + p.pct[1] + "% 1RM") +
+      statBlock("권장 반복수", formatRepRange(p.reps), "세트당 반복") +
+      statBlock("권장 세트수", p.sets[0] + "~" + p.sets[1] + "세트", "종목당") +
+      statBlock("휴식 시간", p.rest, "세트 사이") +
+      '<div class="program-desc"><b>' + p.label + '</b> — ' + p.desc + '</div>';
+
+    renderCompareTable();
+  }
+  function statBlock(label, value, sub){
+    return '<div class="stat"><div class="stat-label">' + label + '</div>' +
+           '<div class="stat-value">' + value + '</div>' +
+           '<div class="stat-sub">' + sub + '</div></div>';
+  }
+
+  function renderCompareTable(){
+    if(!lastOneRmKg){ compareBody.innerHTML = ""; return; }
+    var rows = [
+      ["목표 무게(%1RM)", function(p){ return p.pct[0] + "~" + p.pct[1] + "%"; }],
+      ["목표 무게", function(p){ return formatWeightRange(p.pct); }],
+      ["반복수", function(p){ return formatRepRange(p.reps); }],
+      ["세트수", function(p){ return p.sets[0] + "~" + p.sets[1] + "세트"; }],
+      ["휴식시간", function(p){ return p.rest; }]
+    ];
+    var html = "";
+    rows.forEach(function(row){
+      html += "<tr><td class='metric'>" + row[0] + "</td>" +
+              "<td>" + row[1](PROGRAMS.power) + "</td>" +
+              "<td>" + row[1](PROGRAMS.hyper) + "</td>" +
+              "<td>" + row[1](PROGRAMS.endur) + "</td></tr>";
+    });
+    compareBody.innerHTML = html;
+  }
+
+  // ---------------- Event wiring ----------------
+  exerciseToggle.querySelectorAll("button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      exerciseToggle.querySelectorAll("button").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      state.exercise = btn.getAttribute("data-exercise");
+      state.exerciseCat = btn.getAttribute("data-cat");
+      renderOneRM();
+    });
+  });
+  weightInput.addEventListener("input", function(){
+    state.weight = parseFloat(weightInput.value) || 0;
+    renderOneRM();
+  });
+  repsInput.addEventListener("input", function(){
+    state.reps = parseInt(repsInput.value, 10);
+    repsBadge.textContent = state.reps;
+    renderOneRM();
+  });
+  bodyweightInput.addEventListener("input", function(){
+    state.bodyweight = parseFloat(bodyweightInput.value) || 0;
+    renderLevel();
+  });
+
+  function wireToggle(containerId, dataAttr, onChange){
+    var container = $(containerId);
+    var buttons = container.querySelectorAll("button");
+    buttons.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        buttons.forEach(function(b){ b.classList.remove("active"); });
+        btn.classList.add("active");
+        onChange(btn.getAttribute(dataAttr));
+      });
+    });
+  }
+
+  wireToggle("unit-toggle", "data-unit", function(val){
+    // convert current weight value into new unit for display continuity
+    var wKg = toKg(state.weight, state.unit);
+    state.unit = val;
+    state.weight = round1(fromKg(wKg, val));
+    weightInput.value = state.weight;
+    renderOneRM();
+  });
+
+  wireToggle("bw-unit-toggle", "data-bwunit", function(val){
+    var bwKg = toKg(state.bodyweight, state.bwUnit);
+    state.bwUnit = val;
+    state.bodyweight = round1(fromKg(bwKg, val));
+    bodyweightInput.value = state.bodyweight;
+    renderLevel();
+  });
+
+  wireToggle("formula-toggle", "data-formula", function(val){
+    state.formula = val;
+    renderOneRM();
+  });
+
+  wireToggle("gender-toggle", "data-gender", function(val){
+    state.gender = val;
+    renderLevel();
+  });
+
+  wireToggle("program-tabs", "data-p", function(val){
+    state.program = val;
+    renderPrograms();
+  });
+  document.querySelectorAll(".program-tabs button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".program-tabs button").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+    });
+  });
+
+  $("compare-toggle").addEventListener("click", function(){
+    var showing = compareTable.style.display !== "none";
+    compareTable.style.display = showing ? "none" : "table";
+    $("compare-toggle").textContent = showing ? "세 가지 방식 한눈에 비교하기" : "비교표 닫기";
+  });
+
+  $("share-btn").addEventListener("click", function(){
+    var bwKg = toKg(state.bodyweight, state.bwUnit);
+    var ratio = bwKg > 0 ? (lastOneRmKg / bwKg).toFixed(2) : "-";
+    var text = state.exercise + " 1RM: " + fmt(lastOneRmKg, state.unit) +
+      " / 체중 대비 " + ratio + "배 / " + levelBadge.textContent;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        $("share-btn").textContent = "복사 완료!";
+        setTimeout(function(){ $("share-btn").textContent = "결과 복사하기"; }, 1600);
+      }).catch(function(){
+        alert(text);
+      });
+    } else {
+      alert(text);
+    }
+  });
+
+  // ---------------- Init ----------------
+  renderOneRM();
+})();
+</script>
+</body>
+</html>
