@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1RM 계산기 | 스쿼트·벤치·데드·3대 합계·퍼센트표</title>
+<meta name="description" content="무게와 반복 횟수로 1RM을 계산하고 1~12RM 중량표, 스트렝스 등급, 근비대 추천 무게, 3대 합계(300·400·500), 1RM 퍼센트표(80%·90%)와 3RM·5RM 환산까지 한 페이지에서 무료로 확인하세요.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://1rm-caculator.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="1RM 계산기">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="1RM 계산기 | 스쿼트·벤치·데드·3대 합계·퍼센트표">
+<meta property="og:description" content="무게와 반복 횟수로 1RM을 계산하고 1~12RM 중량표, 스트렝스 등급, 근비대 추천 무게, 3대 합계(300·400·500), 1RM 퍼센트표(80%·90%)와 3RM·5RM 환산까지 한 페이지에서 무료로 확인하세요.">
+<meta property="og:url" content="https://1rm-caculator.vercel.app/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1RM 계산기 | 스쿼트·벤치·데드·3대 합계·퍼센트표">
+<meta name="twitter:description" content="무게와 반복 횟수로 1RM을 계산하고 1~12RM 중량표, 스트렝스 등급, 근비대 추천 무게, 3대 합계(300·400·500), 1RM 퍼센트표(80%·90%)와 3RM·5RM 환산까지 한 페이지에서 무료로 확인하세요.">
+<meta name="theme-color" content="#14161a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23e3432a' stroke-width='5'/%3E%3C/svg%3E">
+<!-- Google AdSense: 승인 후 아래 줄의 주석을 풀고 ca-pub-XXXXXXXXXXXXXXXX 를 실제 발행자 ID로 교체하세요 (LCP 보호를 위해 기본은 꺼둠)
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+-->
+<style>
+/* 1RM 계산기 공통 스타일 - 다크 테마. 웹폰트 없이 시스템 폰트만 사용(LCP/CLS 최적화) */
+:root{
+  --bg:#14161a; --bg-raise:#191c21; --surface:#1d2027; --surface-2:#242830;
+  --border:#33383f; --border-soft:#282c33;
+  --text:#edeef0; --text-dim:#9ea4af; --text-faint:#858b96;
+  --accent:#e3432a; --accent-strong:#d13a24; --accent-glow:rgba(227,67,42,.18);
+  --power:#e3432a; --hyper:#3f7fe0; --endur:#3fb87f;
+  --radius:6px;
+  --font-body:system-ui,-apple-system,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  --font-num:"Arial Narrow","Roboto Condensed","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+}
+.lv-1{--lv:#8a919c}.lv-2{--lv:#4c93d6}.lv-3{--lv:#3fb87f}.lv-4{--lv:#e08a2c}.lv-5{--lv:#d4af37}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%;height:auto}
+button,input{font:inherit;color:inherit}
+a{color:#ff7a63;text-underline-offset:2px}
+a:hover{color:#ff9b8a}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.muted{color:var(--text-dim)}
+.fine{color:var(--text-faint);font-size:12.5px;margin:12px 0 0}
+.skip{position:absolute;left:-999px;top:0;background:var(--accent-strong);color:#fff;padding:8px 14px;z-index:10}
+.skip:focus{left:8px;top:8px}
+
+/* ---------- 헤더 / 내비 ---------- */
+.site-header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--border-soft);background:rgba(25,28,33,.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.site-header .bar{display:flex;align-items:center;gap:20px;min-height:54px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--text);text-decoration:none;font-weight:700;white-space:nowrap}
+.brand .plate{width:16px;height:16px;border-radius:50%;border:3px solid var(--accent);flex:none}
+.site-nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1}
+.site-nav::-webkit-scrollbar{display:none}
+.site-nav a{color:var(--text-dim);text-decoration:none;font-size:14px;padding:6px 10px;border-radius:4px;white-space:nowrap}
+.site-nav a:hover,.site-nav a[aria-current="page"]{color:var(--text);background:var(--surface-2)}
+
+.breadcrumb{font-size:13px;color:var(--text-faint);padding:14px 0 0}
+.breadcrumb ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.breadcrumb li+li::before{content:"/";margin-right:6px;color:var(--border)}
+.breadcrumb a{color:var(--text-dim)}
+
+.page-head{padding:26px 0 22px}
+.page-head h1{font-size:clamp(28px,5.2vw,42px);line-height:1.2;margin:0 0 10px;font-weight:800;letter-spacing:-.01em}
+.page-head .lead{margin:0;color:var(--text-dim);font-size:16px;max-width:64ch}
+
+main{padding-bottom:64px}
+section[id],.rm-widget{scroll-margin-top:72px}
+.sec-head{margin:0 0 6px}
+.sec-head h2{font-size:28px;line-height:1.25;margin:0 0 6px;letter-spacing:-.01em}
+.sec-head p{margin:0 0 18px;color:var(--text-dim);max-width:68ch}
+.sec-block{margin-top:64px}
+.lang-link{color:var(--text-dim);font-size:13px;text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:5px 10px;white-space:nowrap}
+main>section+section,main>article+section,main>section+article{margin-top:52px}
+
+/* ---------- 카드/패널 ---------- */
+.panel,.card{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);padding:22px}
+.card h2,.panel h2{font-size:17px;margin:0 0 14px;font-weight:700}
+.card h3,.panel h3{font-size:15px;margin:18px 0 8px}
+
+/* ---------- 계산기 위젯 ---------- */
+.rm-widget{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:880px){.rm-widget{grid-template-columns:minmax(0,1fr)}}
+.rm-controls{position:sticky;top:70px}
+@media (max-width:880px){.rm-controls{position:static}}
+.rm-results{display:flex;flex-direction:column;gap:20px;min-width:0}
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+.field .lbl,.field label{display:block;font-size:13.5px;color:var(--text-dim);margin-bottom:7px}
+.field input[type=number]{width:100%;background:var(--bg-raise);border:1px solid var(--border);border-radius:4px;padding:11px 12px;font-size:16px;color:var(--text)}
+.field input[type=number]:focus{border-color:var(--accent)}
+.row{display:flex;gap:10px;align-items:stretch}
+.row input{flex:1;min-width:0}
+.lift-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lift-toggle button{background:var(--bg-raise);border:1px solid var(--border);border-radius:4px;color:var(--text-dim);padding:11px 6px;font-size:14px;cursor:pointer}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.seg button{background:var(--bg-raise);border:0;border-right:1px solid var(--border);color:var(--text-dim);padding:9px 16px;font-size:14px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.lift-toggle button.active,.seg button.active{background:var(--accent-strong);border-color:var(--accent-strong);color:#fff;font-weight:600}
+.reps-row{display:flex;align-items:center;gap:14px}
+.reps-row input[type=range]{flex:1;accent-color:var(--accent)}
+.reps-badge{font-family:var(--font-num);font-weight:700;font-size:22px;min-width:46px;text-align:center;background:var(--bg-raise);border:1px solid var(--border);border-radius:4px;padding:5px 0}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:9px 16px;border-radius:4px;font-size:13.5px;cursor:pointer}
+.btn-ghost:hover{border-color:var(--accent);color:var(--text)}
+.safety{margin:16px 0 0;font-size:12.5px;color:var(--text-faint)}
+
+.hero-card{position:relative;overflow:hidden;padding:26px 24px}
+.hero-card::before{content:"";position:absolute;right:-40px;top:50%;width:210px;height:210px;transform:translateY(-50%);border-radius:50%;border:14px solid var(--border-soft);opacity:.5;pointer-events:none}
+.hero-label{color:var(--text-dim);font-size:14px}
+.hero-value{font-family:var(--font-num);font-weight:800;font-size:clamp(50px,9vw,78px);line-height:1.05;position:relative;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.hero-unit{font-size:.34em;color:var(--text-dim);font-weight:600;margin-left:8px}
+.hero-sub{display:flex;gap:24px;flex-wrap:wrap;margin-top:10px;font-size:14px;color:var(--text-dim);position:relative}
+.hero-sub b{color:var(--text);font-weight:700}
+.hero-note{margin:12px 0 0;font-size:12.5px;color:var(--text-faint);position:relative}
+
+.rep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:560px){.rep-grid{grid-template-columns:repeat(3,1fr)}}
+.rep-cell{background:var(--bg-raise);border:1px solid var(--border-soft);border-radius:4px;padding:10px 8px;text-align:center}
+.rep-cell.is-input{border-color:var(--accent);background:var(--accent-glow)}
+.rep-cell .rn{font-size:12px;color:var(--text-faint)}
+.rep-cell .rw{font-family:var(--font-num);font-weight:700;font-size:19px;margin-top:2px;font-variant-numeric:tabular-nums}
+
+.lv-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.lv-badge{font-weight:800;font-size:22px;padding:3px 14px 4px;border-radius:4px;color:#14161a;background:var(--lv,#8a919c)}
+.ratio-note{color:var(--text-dim);font-size:14px}
+.gauge{margin:18px 0 8px}
+.gauge-track{height:10px;border-radius:6px;background:var(--bg-raise);border:1px solid var(--border-soft);overflow:hidden}
+.gauge-fill{height:100%;border-radius:6px 0 0 6px;background:var(--lv,#8a919c)}
+.gauge-labels{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-faint);margin-top:6px}
+.pct-line,.next-line{margin:12px 0 0;font-size:15px}
+.pct-line b,.next-line b{color:#fff}
+.next-line{padding:12px 14px;background:var(--bg-raise);border-left:3px solid var(--accent);border-radius:0 4px 4px 0;font-size:14.5px}
+
+.hyper-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.k{font-size:13px;color:var(--text-dim);margin-bottom:2px}
+.v{font-family:var(--font-num);font-weight:700;font-size:24px;font-variant-numeric:tabular-nums}
+.s{font-size:12.5px;color:var(--text-faint)}
+
+.prog-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.prog-tabs button{background:var(--bg-raise);border:1px solid var(--border-soft);color:var(--text-dim);padding:9px 16px;border-radius:4px;font-size:14px;cursor:pointer}
+.prog-tabs button.active{color:#fff;font-weight:600}
+.prog-tabs button.p-power.active{background:#d13a24;border-color:#d13a24}
+.prog-tabs button.p-hyper.active{background:#2f6fd0;border-color:#2f6fd0}
+.prog-tabs button.p-endur.active{background:#238a5b;border-color:#238a5b}
+.prog-detail{display:grid;grid-template-columns:minmax(0,1.7fr) repeat(3,minmax(0,1fr));gap:16px;border:1px solid var(--border-soft);border-radius:var(--radius);padding:20px}
+.prog-detail.p-power{border-color:var(--power)}.prog-detail.p-hyper{border-color:var(--hyper)}.prog-detail.p-endur{border-color:var(--endur)}
+.prog-detail .v{font-size:21px}
+@media (max-width:720px){.prog-detail{grid-template-columns:1fr 1fr}.prog-detail .v{font-size:22px}}
+.prog-desc{grid-column:1/-1;margin:4px 0 0;padding-top:14px;border-top:1px solid var(--border-soft);color:var(--text-dim);font-size:14.5px}
+.prog-desc b{color:var(--text)}
+
+
+@media (max-width:480px){
+  .rep-cell .rw{font-size:16px;white-space:nowrap}
+  .hyper-grid{grid-template-columns:1fr}
+  .hero-card{padding:22px 18px}
+}
+
+/* ---------- 표 ---------- */
+.table-scroll{overflow-x:auto;margin:16px 0 0;-webkit-overflow-scrolling:touch}
+.data-table{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}
+.data-table caption{text-align:left;color:var(--text-dim);font-size:13px;padding-bottom:8px}
+.data-table th,.data-table td{border:1px solid var(--border-soft);padding:9px 12px;text-align:left}
+.data-table thead th{background:var(--surface-2);color:var(--text-dim);font-size:13px;font-weight:600}
+.data-table tbody th{font-weight:600;color:var(--text);background:var(--bg-raise);white-space:nowrap}
+.data-table td{font-variant-numeric:tabular-nums}
+.data-table tr.hl td,.data-table tr.hl th{background:var(--accent-glow)}
+.data-table th.c-power{color:#ff8b78}.data-table th.c-hyper{color:#7fa9f0}.data-table th.c-endur{color:#66cf9c}
+.goal-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.goal-list li{display:flex;justify-content:space-between;gap:12px;background:var(--bg-raise);border:1px solid var(--border-soft);border-radius:4px;padding:10px 14px}
+.goal-list li.done{border-color:var(--endur)}
+.goal-list li.done b{color:#66cf9c}
+
+/* ---------- 본문(가이드) ---------- */
+.prose{max-width:760px}
+.prose h2{font-size:24px;line-height:1.3;margin:40px 0 12px;letter-spacing:-.005em}
+.prose h2:first-child{margin-top:0}
+.prose h3{font-size:18px;margin:26px 0 8px}
+.prose p{margin:0 0 16px;color:#d4d7dc}
+.prose ul,.prose ol{margin:0 0 16px;padding-left:22px;color:#d4d7dc}
+.prose li{margin-bottom:6px}
+.prose strong{color:#fff}
+.formula{background:var(--bg-raise);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 4px 4px 0;padding:14px 18px;margin:0 0 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;color:#fff;overflow-x:auto}
+.callout{background:var(--bg-raise);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:0 0 16px;font-size:14.5px;color:var(--text-dim)}
+.callout strong{color:var(--text)}
+.byline{font-size:12.5px;color:var(--text-faint);margin:0 0 20px}
+
+.faq details{border-bottom:1px solid var(--border-soft);padding:14px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:16.5px;list-style:none;position:relative;padding-right:28px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:0;top:0;color:var(--accent);font-size:20px;line-height:1.3}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:10px 0 0;color:var(--text-dim);font-size:15px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;list-style:none;margin:0;padding:0}
+.cards a{display:block;height:100%;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px;text-decoration:none;color:var(--text)}
+.cards a:hover{border-color:var(--accent)}
+.cards .t{display:block;font-weight:700;margin-bottom:4px}
+.cards .d{display:block;color:var(--text-dim);font-size:13.5px;line-height:1.5}
+.group-title{font-size:15px;color:var(--text-dim);margin:22px 0 10px;font-weight:600}
+
+/* ---------- 3대/차트 패널 ---------- */
+.rm-big3,.rm-chart{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
+.rm-widget>*,.rm-big3>*,.rm-chart>*{min-width:0}
+@media (max-width:880px){.rm-big3,.rm-chart{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- 푸터 ---------- */
+.site-footer{border-top:1px solid var(--border-soft);padding:28px 0 56px;color:var(--text-faint);font-size:13px}
+.site-footer p{margin:0 0 10px}
+.site-footer nav ul{list-style:none;margin:8px 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
+.site-footer a{color:var(--text-dim)}
+.site-footer a:hover{color:var(--accent)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- 빠른 예시 / 보조 ---------- */
+.btn-mini{background:var(--bg-raise);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:6px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+.btn-mini:hover{border-color:var(--accent);color:#fff}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.two-col{grid-template-columns:1fr}}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 16px}
+@media (max-width:640px){.kpi-row{grid-template-columns:1fr}}
+.kpi{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);padding:14px 16px}
+.kpi h3{margin:0 0 6px;font-size:15px}
+.kpi p{margin:0;color:var(--text-dim);font-size:14px}
+.kpi .big{font-family:var(--font-num);font-weight:800;font-size:26px;color:#fff;margin-bottom:2px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;padding:0;list-style:none}
+.toc a{display:inline-block;background:var(--surface);border:1px solid var(--border-soft);border-radius:999px;padding:7px 14px;font-size:13.5px;color:var(--text-dim);text-decoration:none}
+.toc a:hover{border-color:var(--accent);color:#fff}
+
+.pct-table td:nth-child(2),.pct-table td:nth-child(3){white-space:nowrap}
+.card .data-table{min-width:300px}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"1RM 계산기","url":"https://1rm-caculator.vercel.app/","description":"무게와 반복 횟수로 1RM을 계산하고 1~12RM 중량표, 스트렝스 등급, 근비대 추천 무게, 3대 합계(300·400·500), 1RM 퍼센트표(80%·90%)와 3RM·5RM 환산까지 한 페이지에서 무료로 확인하세요.","applicationCategory":"HealthApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"1RM을 직접 측정하지 않고 계산만 해도 괜찮은가요?","acceptedAnswer":{"@type":"Answer","text":"대부분의 훈련 목적에는 충분합니다. 무게를 퍼센트로 정하거나 기록 변화를 추적하는 데는 정확한 절대값보다 일관된 기준이 중요하기 때문입니다. 실제 1RM이 필요하다면 스포터와 세이프티를 갖추고 충분히 워밍업한 뒤 측정하세요."}},{"@type":"Question","name":"몇 회로 계산해야 가장 정확한가요?","acceptedAnswer":{"@type":"Answer","text":"3~5회를 권합니다. 반복이 적을수록 피로 누적과 근지구력 차이의 영향이 줄어 오차가 작아지고, 10회를 넘기면 오차가 눈에 띄게 커집니다."}},{"@type":"Question","name":"벤치 5RM과 3RM 중 어느 쪽으로 환산하는 게 좋은가요?","acceptedAnswer":{"@type":"Answer","text":"3RM이 1RM에 더 가깝지만 무거운 만큼 스포터와 안전 장비가 더 중요합니다. 스포터가 없다면 여유 있는 5회 기록을 쓰고, 평소 훈련에서 자연스럽게 나온 기록을 사용하는 것이 가장 좋습니다."}},{"@type":"Question","name":"3대 500은 어느 정도 난이도인가요?","acceptedAnswer":{"@type":"Answer","text":"체중과 성별에 따라 매우 다릅니다. 이 사이트 기준으로 체중 75kg 남성이 3대 500이면 체중의 약 6.7배로 고급 구간입니다. 체중이 가벼울수록 훨씬 어려운 목표이며, 대체로 수년 단위의 체계적인 훈련이 필요합니다."}},{"@type":"Question","name":"스트렝스 등급의 \"상위 %\"는 실제 통계인가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 체중 대비 배율 기준표로 계산한 추정치이며 특정 집단을 조사한 공식 통계가 아닙니다. 대략적인 위치를 가늠하고 다음 목표를 세우는 참고용으로만 활용하세요."}}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header"><div class="wrap bar"><a class="brand" href="#top"><span class="plate"></span>1RM 계산기</a><nav class="site-nav" aria-label="페이지 목차"><a href="#calculator">계산기</a><a href="#big3">3대 합계</a><a href="#percent">퍼센트표</a><a href="#formula">환산·공식</a><a href="#levels">등급 기준</a><a href="#faq">FAQ</a></nav></div></header>
+<main id="main" class="wrap"><span id="top"></span>
+<header class="page-head"><h1>1RM 계산기</h1><p class="lead">스쿼트·벤치프레스·데드리프트·OHP의 무게와 반복 횟수를 입력하면 1RM을 추정하고, 중량표·등급·근비대 추천 무게·3대 합계·퍼센트표를 한 페이지에서 확인할 수 있습니다.</p></header>
+<section class="rm-widget" id="calculator" aria-label="1RM 계산기" data-rm-widget data-lift="bench" data-w="100" data-r="5" data-sex="male" data-bw="75" data-unit="kg" data-formula="avg" data-programs="1"><div class="panel rm-controls"><div class="field"><span class="lbl" id="lbl-lift">운동 종목</span><div class="lift-toggle" role="group" aria-labelledby="lbl-lift"><button type="button" data-lift="squat" class="" aria-pressed="false">스쿼트</button><button type="button" data-lift="bench" class="active" aria-pressed="true">벤치프레스</button><button type="button" data-lift="deadlift" class="" aria-pressed="false">데드리프트</button><button type="button" data-lift="ohp" class="" aria-pressed="false">밀리터리프레스</button></div></div><div class="field"><label for="rm-w">무게</label><div class="row"><input id="rm-w" data-in="w" type="number" inputmode="decimal" min="0" step="0.5" value="100"><div class="seg" role="group" aria-label="단위"><button type="button" data-unit="kg" class="active" aria-pressed="true">kg</button><button type="button" data-unit="lb" aria-pressed="false">lb</button></div></div></div><div class="field"><label for="rm-r">반복 횟수 (1~12회)</label><div class="reps-row"><input id="rm-r" data-in="r" type="range" min="1" max="12" value="5"><div class="reps-badge" data-out="rbadge">5</div></div></div><div class="field"><span class="lbl" id="lbl-formula">계산 공식</span><div class="seg" role="group" aria-labelledby="lbl-formula"><button type="button" data-formula="avg" class="active" aria-pressed="true">평균</button><button type="button" data-formula="epley" aria-pressed="false">Epley</button><button type="button" data-formula="brzycki" aria-pressed="false">Brzycki</button></div></div><div class="field"><span class="lbl" id="lbl-sex">성별 (등급 계산용)</span><div class="seg" role="group" aria-labelledby="lbl-sex"><button type="button" data-sex="male" class="active" aria-pressed="true">남성</button><button type="button" data-sex="female" class="" aria-pressed="false">여성</button></div></div><div class="field"><label for="rm-bw">체중</label><input id="rm-bw" data-in="bw" type="number" inputmode="decimal" min="1" step="0.5" value="75"></div><button type="button" class="btn-ghost" data-act="share">공유 링크 복사</button><p class="safety">모든 결과는 공식 기반의 추정치이며 참고용입니다. 고중량 시도 시에는 반드시 스포터와 함께, 세이프티 장비를 갖추고 진행하세요.</p></div><div class="rm-results"><div class="card hero-card" data-out="hero" aria-live="polite"><div class="hero-label">예상 1RM · 벤치프레스</div><div class="hero-value">114.6<span class="hero-unit">kg</span></div><div class="hero-sub"><span>Epley <b>116.7 kg</b></span><span>Brzycki <b>112.5 kg</b></span></div><p class="hero-note">입력 100 kg × 5회 · Epley·Brzycki 평균 기준 · 추정치이며 참고용입니다.</p></div><div class="card" data-out="table"><h2>1RM~12RM 예상 중량표</h2><div class="rep-grid"><div class="rep-cell"><div class="rn">1RM</div><div class="rw">114.6 kg</div></div><div class="rep-cell"><div class="rn">2RM</div><div class="rw">109.4 kg</div></div><div class="rep-cell"><div class="rn">3RM</div><div class="rw">106.2 kg</div></div><div class="rep-cell"><div class="rn">4RM</div><div class="rw">103.1 kg</div></div><div class="rep-cell is-input"><div class="rn">5RM</div><div class="rw">100 kg</div></div><div class="rep-cell"><div class="rn">6RM</div><div class="rw">97.1 kg</div></div><div class="rep-cell"><div class="rn">7RM</div><div class="rw">94.2 kg</div></div><div class="rep-cell"><div class="rn">8RM</div><div class="rw">91.4 kg</div></div><div class="rep-cell"><div class="rn">9RM</div><div class="rw">88.6 kg</div></div><div class="rep-cell"><div class="rn">10RM</div><div class="rw">85.9 kg</div></div><div class="rep-cell"><div class="rn">11RM</div><div class="rw">83.3 kg</div></div><div class="rep-cell"><div class="rn">12RM</div><div class="rw">80.7 kg</div></div></div><p class="fine">강조된 칸이 입력한 반복 횟수입니다. 10회 이상 구간은 오차가 커질 수 있습니다.</p></div><div class="card" data-out="level"><h2>스트렝스 등급</h2><div class="lv-row"><span class="lv-badge lv-3">중급</span><span class="ratio-note">체중 대비 1.53배 · 남성 75 kg 기준</span></div><div class="gauge"><div class="gauge-track"><div class="gauge-fill lv-3" style="width:68.9%"></div></div><div class="gauge-labels"><span>운동안함</span><span>입문</span><span>중급</span><span>고급</span><span>보디빌더</span></div></div><p class="pct-line">같은 조건에서 <b>상위 31.1%</b> 수준으로 추정됩니다.</p><p class="next-line">다음 등급 <b>고급</b>까지 <b>16.7 kg</b> 더 필요합니다.</p></div><div class="card" data-out="hyper"><h2>근비대 추천 무게</h2><div class="hyper-grid"><div><div class="k">추천 무게</div><div class="v">75~92.5 kg</div><div class="s">1RM의 65~80%</div></div><div><div class="k">반복 · 세트</div><div class="v">8~12회 × 3~5</div><div class="s">세트 간 60~90초 휴식</div></div></div><p class="fine">대표 세트 예시: 1RM의 70%인 <b>80 kg</b>으로 10회를 3~4세트. 무게는 2.5 kg 단위로 반올림했고, 마지막 반복이 버거워지면 그 무게가 적당합니다.</p></div><div class="card" data-out="programs"><h2>목적별 훈련 프로그램</h2><div class="prog-tabs" role="group" aria-label="훈련 목적"><button type="button" data-p="power" class="p-power active" aria-pressed="true">파워리프팅(근력)</button><button type="button" data-p="hyper" class="p-hyper" aria-pressed="false">근비대</button><button type="button" data-p="endur" class="p-endur" aria-pressed="false">근지구력</button></div><div class="prog-detail p-power"><div class="stat"><div class="k">목표 무게</div><div class="v">97.5~110 kg</div><div class="s">1RM의 85~95%</div></div><div class="stat"><div class="k">권장 반복수</div><div class="v">1~5회</div><div class="s">세트당</div></div><div class="stat"><div class="k">권장 세트수</div><div class="v">3~6세트</div><div class="s">종목당</div></div><div class="stat"><div class="k">휴식 시간</div><div class="v">3~5분</div><div class="s">세트 사이</div></div><p class="prog-desc"><b>파워리프팅 (근력형)</b> 고중량·저반복 방식으로 신경계 적응과 최대 근력 향상에 집중합니다. 세트마다 충분히 쉬어 회복하고, 같은 중량대를 주 1~2회 다루는 것이 일반적입니다. 폼이 무너질 정도의 무게는 피하세요.</p></div><div class="table-scroll"><table class="data-table"><caption>세 가지 훈련 방식 비교</caption><thead><tr><th scope="col">구분</th><th scope="col" class="c-power">파워리프팅(근력)</th><th scope="col" class="c-hyper">근비대</th><th scope="col" class="c-endur">근지구력</th></tr></thead><tbody><tr><th scope="row">강도(%1RM)</th><td>85~95%</td><td>65~80%</td><td>50~65%</td></tr><tr><th scope="row">목표 무게</th><td>97.5~110 kg</td><td>75~92.5 kg</td><td>57.5~75 kg</td></tr><tr><th scope="row">반복수</th><td>1~5회</td><td>8~12회</td><td>15회 이상</td></tr><tr><th scope="row">세트수</th><td>3~6세트</td><td>3~5세트</td><td>2~4세트</td></tr><tr><th scope="row">휴식시간</th><td>3~5분</td><td>60~90초</td><td>30~45초</td></tr></tbody></table></div></div></div></section>
+<section id="examples" class="sec-block"><div class="sec-head"><h2>자주 찾는 계산 예시</h2><p>버튼을 누르면 위 계산기에 값이 채워집니다.</p></div><div class="table-scroll"><table class="data-table"><caption>종목·무게·반복별 1RM 예시</caption><thead><tr><th scope="col">입력</th><th scope="col">Epley</th><th scope="col">Brzycki</th><th scope="col">평균 1RM</th><th scope="col"></th></tr></thead><tbody><tr><th scope="row">벤치프레스 100kg × 5회</th><td>116.7kg</td><td>112.5kg</td><td><strong>114.6kg</strong></td><td><button type="button" class="btn-mini" data-preset="bench:100:5">계산기에 넣기</button></td></tr><tr><th scope="row">벤치프레스 80kg × 5회</th><td>93.3kg</td><td>90kg</td><td><strong>91.7kg</strong></td><td><button type="button" class="btn-mini" data-preset="bench:80:5">계산기에 넣기</button></td></tr><tr><th scope="row">스쿼트 100kg × 5회</th><td>116.7kg</td><td>112.5kg</td><td><strong>114.6kg</strong></td><td><button type="button" class="btn-mini" data-preset="squat:100:5">계산기에 넣기</button></td></tr><tr><th scope="row">데드리프트 150kg × 5회</th><td>175kg</td><td>168.8kg</td><td><strong>171.9kg</strong></td><td><button type="button" class="btn-mini" data-preset="deadlift:150:5">계산기에 넣기</button></td></tr></tbody></table></div></section>
+<section id="big3" class="sec-block"><div class="sec-head"><h2>3대 합계 계산 (3대 300·400·500)</h2><p>세 종목 1RM을 넣으면 합계, 체중 대비 등급, 300·400·500까지 남은 무게를 보여줍니다.</p></div><div class="rm-big3" id="big3-panel" role="group" aria-label="3대 합계 계산" data-rm-big3 data-sq="120" data-bn="80" data-dl="150" data-bw="75" data-sex="male"><div class="panel"><div class="field"><label for="b3-sq">스쿼트 1RM (kg)</label><input id="b3-sq" data-in="sq" type="number" inputmode="decimal" min="0" step="0.5" value="120"></div><div class="field"><label for="b3-bn">벤치프레스 1RM (kg)</label><input id="b3-bn" data-in="bn" type="number" inputmode="decimal" min="0" step="0.5" value="80"></div><div class="field"><label for="b3-dl">데드리프트 1RM (kg)</label><input id="b3-dl" data-in="dl" type="number" inputmode="decimal" min="0" step="0.5" value="150"></div><div class="field"><label for="b3-bw">체중 (kg)</label><input id="b3-bw" data-in="bw" type="number" inputmode="decimal" min="1" step="0.5" value="75"></div><div class="field"><span class="lbl" id="b3-lbl-sex">성별</span><div class="seg" role="group" aria-labelledby="b3-lbl-sex"><button type="button" data-sex="male" class="active" aria-pressed="true">남성</button><button type="button" data-sex="female" class="" aria-pressed="false">여성</button></div></div><button type="button" class="btn-ghost" data-act="share">공유 링크 복사</button></div><div class="card" data-out="big3"><h2>3대 합계 결과</h2><div class="hero-label">3대 합계</div><div class="hero-value">350<span class="hero-unit">kg</span></div><div class="lv-row"><span class="lv-badge lv-3">중급</span><span class="ratio-note">체중 대비 4.67배 · 남성 75 kg 기준</span></div><div class="gauge"><div class="gauge-track"><div class="gauge-fill lv-3" style="width:57.8%"></div></div><div class="gauge-labels"><span>운동안함</span><span>입문</span><span>중급</span><span>고급</span><span>보디빌더</span></div></div><p class="pct-line">3대 합계 기준 <b>상위 42.2%</b> 수준으로 추정됩니다.</p><h3>목표까지 남은 무게</h3><ul class="goal-list"><li class="done"><span>3대 300</span><b>달성</b></li><li class=""><span>3대 400</span><b>50 kg 남음</b></li><li class=""><span>3대 500</span><b>150 kg 남음</b></li></ul><div class="table-scroll"><table class="data-table"><caption>종목별 등급</caption><thead><tr><th scope="col">종목</th><th scope="col">1RM</th><th scope="col">체중 대비</th><th scope="col">등급</th></tr></thead><tbody><tr><th scope="row">스쿼트</th><td>120 kg</td><td>1.6배</td><td>중급</td></tr><tr><th scope="row">벤치프레스</th><td>80 kg</td><td>1.07배</td><td>입문</td></tr><tr><th scope="row">데드리프트</th><td>150 kg</td><td>2배</td><td>중급</td></tr></tbody></table></div><p class="fine">3대 합계 등급은 세 종목 기준 배율을 합산한 값으로 추정한 참고용 지표입니다.</p></div></div><div class="kpi-row" style="margin-top:20px"><div class="kpi"><h3>3대 300</h3><div class="big">110 + 70 + 120</div><p>체중 75kg 남성 기준 4배 · <strong>입문</strong></p></div><div class="kpi"><h3>3대 400</h3><div class="big">150 + 100 + 150</div><p>체중 75kg 남성 기준 5.3배 · <strong>중급</strong></p></div><div class="kpi"><h3>3대 500</h3><div class="big">190 + 120 + 190</div><p>체중 75kg 남성 기준 6.7배 · <strong>고급</strong></p></div></div><div class="prose"><p>위 카드는 분배 예시입니다. 3대 300은 입문 단계에서 선형 증량으로 접근하는 첫 목표, 400은 주기화와 약점 종목 관리가 필요한 구간, 500은 체중과 성별에 따라 난이도 차이가 매우 큰 장기 목표입니다. 사람마다 강한 종목이 다르니 참고만 하세요.</p></div></section>
+<section id="percent" class="sec-block"><div class="sec-head"><h2>1RM 퍼센트표 (80%·90% 계산)</h2><p>내 1RM을 넣으면 50~100% 무게와 권장 세트·반복, 용도를 볼 수 있습니다.</p></div><div class="rm-chart" id="chart-panel" role="group" aria-label="1RM 퍼센트표" data-rm-chart data-one="100" data-unit="kg"><div class="panel"><div class="field"><label for="ch-one">내 1RM</label><div class="row"><input id="ch-one" data-in="one" type="number" inputmode="decimal" min="0" step="0.5" value="100"><div class="seg" role="group" aria-label="단위"><button type="button" data-unit="kg" class="active" aria-pressed="true">kg</button><button type="button" data-unit="lb" aria-pressed="false">lb</button></div></div></div></div><div class="card" data-out="chart"><h2>1RM 퍼센트표 (50~100%)</h2><div class="table-scroll"><table class="data-table pct-table"><caption>1RM 100 kg 기준 퍼센트별 무게</caption><thead><tr><th scope="col">강도</th><th scope="col">무게</th><th scope="col">추정 최대 반복</th><th scope="col">권장 세트×반복</th><th scope="col">용도</th></tr></thead><tbody><tr class=""><th scope="row">100%</th><td>100 kg</td><td>1회</td><td>1세트 × 1회 (테스트)</td><td>1RM 테스트 · 스포터 필수</td></tr><tr class=""><th scope="row">95%</th><td>95 kg</td><td>2~3회</td><td>2~3세트 × 1~2회</td><td>최대 근력 · 싱글 세트</td></tr><tr class="hl"><th scope="row">90%</th><td>90 kg</td><td>3~5회</td><td>3~5세트 × 2~3회</td><td>최대 근력 · 신경계 적응</td></tr><tr class=""><th scope="row">85%</th><td>85 kg</td><td>5~6회</td><td>3~5세트 × 3~5회</td><td>근력 · 저반복 세트</td></tr><tr class="hl"><th scope="row">80%</th><td>80 kg</td><td>8회</td><td>3~5세트 × 4~6회</td><td>근력과 근비대 겸용 · 여유 있게</td></tr><tr class=""><th scope="row">75%</th><td>75 kg</td><td>10회</td><td>3~4세트 × 6~8회</td><td>근비대 · 무거운 구간</td></tr><tr class=""><th scope="row">70%</th><td>70 kg</td><td>12회 이상</td><td>3~4세트 × 8~10회</td><td>근비대 · 표준 구간</td></tr><tr class=""><th scope="row">65%</th><td>65 kg</td><td>12회 이상</td><td>3~4세트 × 10~12회</td><td>근비대 · 볼륨 확보</td></tr><tr class=""><th scope="row">60%</th><td>60 kg</td><td>12회 이상</td><td>2~3세트 × 12~15회</td><td>근지구력 · 기술 연습</td></tr><tr class=""><th scope="row">55%</th><td>55 kg</td><td>12회 이상</td><td>2~3세트 × 15~20회</td><td>근지구력 · 워밍업</td></tr><tr class=""><th scope="row">50%</th><td>50 kg</td><td>12회 이상</td><td>워밍업 1~2세트 × 5~10회</td><td>워밍업 · 회복 세션</td></tr></tbody></table></div><p class="fine">무게는 2.5 kg 단위로 반올림했습니다. 추정 최대 반복은 Epley·Brzycki 공식 범위이며 개인차가 있는 참고용 수치입니다.</p></div></div><div class="prose" style="margin-top:20px"><p>1RM의 80%는 <strong>1RM × 0.8</strong>, 90%는 <strong>1RM × 0.9</strong>입니다. 1RM이 120kg이면 96kg와 108kg이며, 표는 원판 단위인 2.5kg로 반올림합니다. 80%는 추정 최대 약 8회(훈련은 4~6회), 90%는 3~5회(훈련은 2~3회)이 기준입니다.</p></div></section>
+<section id="formula" class="sec-block"><div class="sec-head"><h2>1RM 계산 공식과 3RM·5RM 환산</h2><p>두 공식의 차이와 벤치 3RM·5RM으로 1RM을 환산하는 방법입니다.</p></div><div class="prose"><div class="formula">Epley&nbsp;&nbsp;&nbsp;: 1RM = w × (1 + r / 30)<br>Brzycki : 1RM = w × 36 / (37 − r)</div><p>w는 든 무게, r은 반복 횟수입니다. 80kg × 8회면 Epley 101.3kg, Brzycki 99.3kg입니다. 두 공식은 10회 부근에서 거의 같아지고, 10회보다 적으면 Epley가, 많으면 Brzycki가 더 높게 나옵니다. 그래서 기본값은 평균이며, <strong>3~5회 기록이 가장 정확하고 10회 이상은 오차가 커집니다.</strong></p><p>5RM은 1RM의 약 86~89%, 3RM은 약 91~94%입니다. 즉 <strong>1RM ≈ 5RM × 1.13~1.17</strong>, <strong>1RM ≈ 3RM × 1.06~1.10</strong>입니다. 스포터가 없다면 여유 있는 5회 기록으로 환산하는 편이 안전합니다.</p></div><div class="table-scroll"><table class="data-table"><caption>벤치 3RM·5RM 무게별 1RM 환산 (평균)</caption><thead><tr><th scope="col">든 무게</th><th scope="col">3RM 기준</th><th scope="col">5RM 기준</th></tr></thead><tbody><tr><th scope="row">60kg</th><td>64.8kg</td><td>68.8kg</td></tr><tr><th scope="row">80kg</th><td>86.4kg</td><td>91.7kg</td></tr><tr><th scope="row">100kg</th><td>107.9kg</td><td>114.6kg</td></tr><tr><th scope="row">120kg</th><td>129.5kg</td><td>137.5kg</td></tr></tbody></table></div><div class="table-scroll"><table class="data-table"><caption>반복 구간별 강도와 목적</caption><thead><tr><th scope="col">구간</th><th scope="col">강도(%1RM)</th><th scope="col">목적</th></tr></thead><tbody><tr><th scope="row">1RM</th><td>100%</td><td>최대 힘 측정</td></tr><tr><th scope="row">3~5RM</th><td>약 86~94%</td><td>최대 근력 · 신경계 적응</td></tr><tr><th scope="row">8~12RM</th><td>약 69~81%</td><td>근비대(근육 크기)</td></tr><tr><th scope="row">15RM 이상</th><td>약 67% 이하</td><td>근지구력</td></tr></tbody></table></div></section>
+<section id="levels" class="sec-block"><div class="sec-head"><h2>체중 대비 스트렝스 등급 기준</h2><p>추정 1RM ÷ 체중 배율로 등급을 나눕니다. 기록이 표의 배율 이상이면 그 등급입니다.</p></div><div class="table-scroll"><table class="data-table"><caption>체중 대비 1RM 배율 기준 (해당 배율 이상이면 그 등급)</caption><thead><tr><th scope="col">종목</th><th scope="col">성별</th><th scope="col">운동안함</th><th scope="col">입문</th><th scope="col">중급</th><th scope="col">고급</th><th scope="col">보디빌더</th></tr></thead><tbody><tr><th scope="row">스쿼트</th><td>남성</td><td>0.5배</td><td>1배</td><td>1.5배</td><td>2배</td><td>2.5배</td></tr><tr><th scope="row">스쿼트</th><td>여성</td><td>0.4배</td><td>0.75배</td><td>1.15배</td><td>1.6배</td><td>2배</td></tr><tr><th scope="row">벤치프레스</th><td>남성</td><td>0.5배</td><td>0.75배</td><td>1.25배</td><td>1.75배</td><td>2배</td></tr><tr><th scope="row">벤치프레스</th><td>여성</td><td>0.3배</td><td>0.5배</td><td>0.75배</td><td>1배</td><td>1.25배</td></tr><tr><th scope="row">데드리프트</th><td>남성</td><td>0.75배</td><td>1.25배</td><td>1.75배</td><td>2.25배</td><td>2.75배</td></tr><tr><th scope="row">데드리프트</th><td>여성</td><td>0.55배</td><td>0.95배</td><td>1.35배</td><td>1.75배</td><td>2.15배</td></tr><tr><th scope="row">밀리터리프레스(OHP)</th><td>남성</td><td>0.35배</td><td>0.55배</td><td>0.8배</td><td>1배</td><td>1.2배</td></tr><tr><th scope="row">밀리터리프레스(OHP)</th><td>여성</td><td>0.2배</td><td>0.35배</td><td>0.5배</td><td>0.65배</td><td>0.8배</td></tr></tbody></table></div><div class="prose"><p>체중 75kg 남성이 스쿼트 1RM 112.5kg이면 1.5배로 중급입니다. &ldquo;상위 몇 %&rdquo;는 이 기준표를 이어 붙인 <strong>추정치</strong>이며 공식 통계가 아닙니다.</p></div></section>
+<section id="faq" class="sec-block faq" aria-labelledby="faq-h"><div class="sec-head"><h2 id="faq-h">자주 묻는 질문</h2></div><details open><summary>1RM을 직접 측정하지 않고 계산만 해도 괜찮은가요?</summary><p>대부분의 훈련 목적에는 충분합니다. 무게를 퍼센트로 정하거나 기록 변화를 추적하는 데는 정확한 절대값보다 일관된 기준이 중요하기 때문입니다. 실제 1RM이 필요하다면 스포터와 세이프티를 갖추고 충분히 워밍업한 뒤 측정하세요.</p></details><details><summary>몇 회로 계산해야 가장 정확한가요?</summary><p>3~5회를 권합니다. 반복이 적을수록 피로 누적과 근지구력 차이의 영향이 줄어 오차가 작아지고, 10회를 넘기면 오차가 눈에 띄게 커집니다.</p></details><details><summary>벤치 5RM과 3RM 중 어느 쪽으로 환산하는 게 좋은가요?</summary><p>3RM이 1RM에 더 가깝지만 무거운 만큼 스포터와 안전 장비가 더 중요합니다. 스포터가 없다면 여유 있는 5회 기록을 쓰고, 평소 훈련에서 자연스럽게 나온 기록을 사용하는 것이 가장 좋습니다.</p></details><details><summary>3대 500은 어느 정도 난이도인가요?</summary><p>체중과 성별에 따라 매우 다릅니다. 이 사이트 기준으로 체중 75kg 남성이 3대 500이면 체중의 약 6.7배로 고급 구간입니다. 체중이 가벼울수록 훨씬 어려운 목표이며, 대체로 수년 단위의 체계적인 훈련이 필요합니다.</p></details><details><summary>스트렝스 등급의 &quot;상위 %&quot;는 실제 통계인가요?</summary><p>아닙니다. 체중 대비 배율 기준표로 계산한 추정치이며 특정 집단을 조사한 공식 통계가 아닙니다. 대략적인 위치를 가늠하고 다음 목표를 세우는 참고용으로만 활용하세요.</p></details></section>
+</main>
+<footer class="site-footer"><div class="wrap"><p>1RM과 스트렝스 등급은 공식·기준표 기반의 추정치이며 실제 최대 중량, 상대적 위치와 다를 수 있는 참고용 수치입니다. 고중량 시도 시에는 반드시 스포터와 함께 안전하게 진행하세요.</p><nav aria-label="바로가기"><ul><li><a href="#calculator">계산기</a></li><li><a href="#big3">3대 합계</a></li><li><a href="#percent">퍼센트표</a></li><li><a href="#formula">환산·공식</a></li><li><a href="#levels">등급 기준</a></li><li><a href="#faq">FAQ</a></li></ul></nav><p><a href="/privacy.html">개인정보처리방침</a></p></div></footer>
+<script>
+/*! 1RM 계산기 - 공통 계산 로직 + 위젯 (바닐라 JS, 의존성 없음)
+ *  - 브라우저: window.RM 으로 노출, [data-rm-widget] / [data-rm-big3] / [data-rm-chart] 를 자동 초기화
+ *  - Node: build.js 가 require 해서 정적 HTML(프리렌더)을 만들 때 같은 함수를 그대로 사용
+ */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) {
+    module.exports = api;
+  } else {
+    root.RM = api;
+    api.autoInit();
+  }
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  /* ------------------------------------------------------------------ */
+  /* 데이터                                                              */
+  /* ------------------------------------------------------------------ */
+  var KG_PER_LB = 0.45359237;
+
+  var LIFT_ORDER = ['squat', 'bench', 'deadlift', 'ohp'];
+  var LIFTS = {
+    squat:    { name: '스쿼트',              btn: '스쿼트' },
+    bench:    { name: '벤치프레스',          btn: '벤치프레스' },
+    deadlift: { name: '데드리프트',          btn: '데드리프트' },
+    ohp:      { name: '밀리터리프레스(OHP)', btn: '밀리터리프레스' }
+  };
+
+  // 체중 대비 배율 기준 [운동안함, 입문, 중급, 고급, 보디빌더]
+  var STANDARDS = {
+    male: {
+      squat:    [0.50, 1.00, 1.50, 2.00, 2.50],
+      bench:    [0.50, 0.75, 1.25, 1.75, 2.00],
+      deadlift: [0.75, 1.25, 1.75, 2.25, 2.75],
+      ohp:      [0.35, 0.55, 0.80, 1.00, 1.20]
+    },
+    female: {
+      squat:    [0.40, 0.75, 1.15, 1.60, 2.00],
+      bench:    [0.30, 0.50, 0.75, 1.00, 1.25],
+      deadlift: [0.55, 0.95, 1.35, 1.75, 2.15],
+      ohp:      [0.20, 0.35, 0.50, 0.65, 0.80]
+    }
+  };
+  var SEX_LABEL = { male: '남성', female: '여성' };
+  var LEVELS = ['운동안함', '입문', '중급', '고급', '보디빌더'];
+  var LEVEL_PCT = [5, 30, 55, 80, 97];
+  var FORMULA_LABEL = { avg: 'Epley·Brzycki 평균', epley: 'Epley', brzycki: 'Brzycki' };
+
+  var PROGRAMS = {
+    power: {
+      tab: '파워리프팅(근력)', label: '파워리프팅 (근력형)',
+      pct: [85, 95], reps: '1~5회', sets: '3~6세트', rest: '3~5분',
+      desc: '고중량·저반복 방식으로 신경계 적응과 최대 근력 향상에 집중합니다. 세트마다 충분히 쉬어 회복하고, 같은 중량대를 주 1~2회 다루는 것이 일반적입니다. 폼이 무너질 정도의 무게는 피하세요.'
+    },
+    hyper: {
+      tab: '근비대', label: '근비대형 (하이퍼트로피)',
+      pct: [65, 80], reps: '8~12회', sets: '3~5세트', rest: '60~90초',
+      desc: '중강도·중반복으로 근육이 받는 총 볼륨을 늘려 근성장을 유도합니다. 세트 간 휴식을 짧게 가져가고 근육의 펌핑감(대사 스트레스)을 느끼는 것이 포인트입니다. 주 2~3회 부위별 분할 훈련에 잘 맞습니다.'
+    },
+    endur: {
+      tab: '근지구력', label: '근지구력형',
+      pct: [50, 65], reps: '15회 이상', sets: '2~4세트', rest: '30~45초',
+      desc: '저강도·고반복으로 근지구력과 심폐 효율을 높입니다. 휴식을 짧게 유지해 컨디셔닝 효과를 키우고, 서킷 형태로 다른 종목과 묶어 진행해도 좋습니다.'
+    }
+  };
+  var PROGRAM_ORDER = ['power', 'hyper', 'endur'];
+
+  // 퍼센트표 (50~100%, 5% 단위)
+  var PCT_ROWS = [100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50];
+  var PCT_INFO = {
+    100: { rec: '1세트 × 1회 (테스트)',   use: '1RM 테스트 · 스포터 필수' },
+    95:  { rec: '2~3세트 × 1~2회',        use: '최대 근력 · 싱글 세트' },
+    90:  { rec: '3~5세트 × 2~3회',        use: '최대 근력 · 신경계 적응' },
+    85:  { rec: '3~5세트 × 3~5회',        use: '근력 · 저반복 세트' },
+    80:  { rec: '3~5세트 × 4~6회',        use: '근력과 근비대 겸용 · 여유 있게' },
+    75:  { rec: '3~4세트 × 6~8회',        use: '근비대 · 무거운 구간' },
+    70:  { rec: '3~4세트 × 8~10회',       use: '근비대 · 표준 구간' },
+    65:  { rec: '3~4세트 × 10~12회',      use: '근비대 · 볼륨 확보' },
+    60:  { rec: '2~3세트 × 12~15회',      use: '근지구력 · 기술 연습' },
+    55:  { rec: '2~3세트 × 15~20회',      use: '근지구력 · 워밍업' },
+    50:  { rec: '워밍업 1~2세트 × 5~10회', use: '워밍업 · 회복 세션' }
+  };
+
+  /* ------------------------------------------------------------------ */
+  /* 수학/서식 유틸                                                       */
+  /* ------------------------------------------------------------------ */
+  function toKg(v, u) { return u === 'lb' ? v * KG_PER_LB : v; }
+  function fromKg(v, u) { return u === 'lb' ? v / KG_PER_LB : v; }
+  function round(v, d) { var m = Math.pow(10, d == null ? 1 : d); return Math.round(v * m) / m; }
+  function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+  function roundStep(v, step) { return Math.round(v / step) * step; }
+
+  // 소수 1자리(불필요한 0 제거) + 천 단위 구분. 브라우저/Node 결과가 항상 같도록 toLocaleString을 쓰지 않는다.
+  function fmtNum(v, d) {
+    d = d == null ? 1 : d;
+    var s = round(v, d).toFixed(d);
+    if (d > 0) { s = s.replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, ''); }
+    var parts = s.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  }
+  function fmtW(kg, unit, d) { return fmtNum(fromKg(kg, unit), d) + ' ' + unit; }
+
+  /* ------------------------------------------------------------------ */
+  /* 공식                                                                 */
+  /* ------------------------------------------------------------------ */
+  function epley(w, r) { return r <= 1 ? w : w * (1 + r / 30); }
+  function brzycki(w, r) { return r <= 1 ? w : w * 36 / (37 - r); }
+  function epleyAt(one, r) { return r <= 1 ? one : one / (1 + r / 30); }
+  function brzyckiAt(one, r) { return r <= 1 ? one : one * (37 - r) / 36; }
+
+  function oneRM(w, r, f) {
+    var e = epley(w, r), b = brzycki(w, r);
+    return f === 'epley' ? e : f === 'brzycki' ? b : (e + b) / 2;
+  }
+  function weightAt(one, r, f) {
+    var e = epleyAt(one, r), b = brzyckiAt(one, r);
+    return f === 'epley' ? e : f === 'brzycki' ? b : (e + b) / 2;
+  }
+  // 1RM의 p(0~1) 강도에서 낼 수 있는 최대 반복수 [Epley, Brzycki]
+  function repsAtPct(p) { return [30 * (1 / p - 1), 37 - 36 * p]; }
+
+  /* ------------------------------------------------------------------ */
+  /* 등급/퍼센타일                                                         */
+  /* ------------------------------------------------------------------ */
+  function calcPercentile(ratio, th) {
+    var pts = [[0, 0]];
+    for (var i = 0; i < 5; i++) { pts.push([th[i], LEVEL_PCT[i]]); }
+    if (ratio >= th[4]) {
+      return Math.min(97 + (99.9 - 97) * (1 - Math.exp(-(ratio - th[4]) * 2)), 99.9);
+    }
+    for (var j = 0; j < pts.length - 1; j++) {
+      var x0 = pts[j][0], y0 = pts[j][1], x1 = pts[j + 1][0], y1 = pts[j + 1][1];
+      if (ratio >= x0 && ratio <= x1) { return x1 === x0 ? y1 : y0 + (y1 - y0) * (ratio - x0) / (x1 - x0); }
+    }
+    return 0;
+  }
+
+  function levelFromThresholds(one, bwKg, th) {
+    var ratio = one / bwKg, idx = -1;
+    for (var i = 0; i < th.length; i++) { if (ratio >= th[i]) { idx = i; } }
+    var lv = Math.max(idx, 0); // 첫 기준 미만도 '운동안함'으로 본다
+    var pct = calcPercentile(ratio, th);
+    var next = null;
+    if (lv < 4) {
+      next = { idx: lv + 1, name: LEVELS[lv + 1], needKg: Math.max(0, th[lv + 1] * bwKg - one) };
+    }
+    return { ratio: ratio, idx: lv, name: LEVELS[lv], pct: pct, top: Math.max(0.1, 100 - pct), next: next, th: th };
+  }
+  function levelInfo(one, bwKg, sex, lift) { return levelFromThresholds(one, bwKg, STANDARDS[sex][lift]); }
+
+  function big3Thresholds(sex) {
+    var s = STANDARDS[sex], out = [];
+    for (var i = 0; i < 5; i++) { out.push(s.squat[i] + s.bench[i] + s.deadlift[i]); }
+    return out;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 분석                                                                 */
+  /* ------------------------------------------------------------------ */
+  function analyze(s) {
+    var u = s.unit === 'lb' ? 'lb' : 'kg';
+    var wKg = toKg(s.w, u), bwKg = toKg(s.bw, u);
+    var r = clamp(parseInt(s.r, 10) || 1, 1, 12);
+    var e = epley(wKg, r), b = brzycki(wKg, r);
+    var f = FORMULA_LABEL[s.formula] ? s.formula : 'avg';
+    var one = f === 'epley' ? e : f === 'brzycki' ? b : (e + b) / 2;
+    var a = {
+      s: s, unit: u, lift: s.lift, liftName: LIFTS[s.lift].name, r: r, f: f,
+      wKg: wKg, bwKg: bwKg, e: e, b: b, one: one, ok: wKg > 0, table: [], level: null, hyper: null
+    };
+    if (!a.ok) { return a; }
+    for (var i = 1; i <= 12; i++) { a.table.push({ r: i, kg: weightAt(one, i, f) }); }
+    if (bwKg > 0) { a.level = levelInfo(one, bwKg, s.sex, s.lift); }
+    var step = u === 'lb' ? 5 : 2.5;
+    function disp(p) { return roundStep(fromKg(one * p, u), step); }
+    a.hyper = { lo: disp(0.65), mid: disp(0.70), hi: disp(0.80), step: step };
+    return a;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 렌더러 (프리렌더/하이드레이션 공용)                                      */
+  /* ------------------------------------------------------------------ */
+  function heroHTML(a) {
+    if (!a.ok) {
+      return '<div class="hero-label">예상 1RM</div><div class="hero-value">–</div>' +
+        '<p class="hero-note">무게를 입력하면 결과가 표시됩니다.</p>';
+    }
+    return '<div class="hero-label">예상 1RM · ' + a.liftName + '</div>' +
+      '<div class="hero-value">' + fmtNum(fromKg(a.one, a.unit)) + '<span class="hero-unit">' + a.unit + '</span></div>' +
+      '<div class="hero-sub"><span>Epley <b>' + fmtW(a.e, a.unit) + '</b></span>' +
+      '<span>Brzycki <b>' + fmtW(a.b, a.unit) + '</b></span></div>' +
+      '<p class="hero-note">입력 ' + fmtNum(a.s.w) + ' ' + a.unit + ' × ' + a.r + '회 · ' + FORMULA_LABEL[a.f] +
+      ' 기준 · 추정치이며 참고용입니다.</p>';
+  }
+
+  function tableHTML(a) {
+    var h = '<h2>1RM~12RM 예상 중량표</h2>';
+    if (!a.ok) { return h + '<p class="muted">무게를 입력하면 표가 채워집니다.</p>'; }
+    h += '<div class="rep-grid">';
+    for (var i = 0; i < a.table.length; i++) {
+      var t = a.table[i];
+      h += '<div class="rep-cell' + (t.r === a.r ? ' is-input' : '') + '"><div class="rn">' + t.r + 'RM</div>' +
+        '<div class="rw">' + fmtW(t.kg, a.unit) + '</div></div>';
+    }
+    return h + '</div><p class="fine">강조된 칸이 입력한 반복 횟수입니다. 10회 이상 구간은 오차가 커질 수 있습니다.</p>';
+  }
+
+  function gaugeLabels() {
+    var h = '<div class="gauge-labels">';
+    for (var i = 0; i < LEVELS.length; i++) { h += '<span>' + LEVELS[i] + '</span>'; }
+    return h + '</div>';
+  }
+
+  function levelHTML(a) {
+    var h = '<h2>스트렝스 등급</h2>';
+    if (!a.ok) { return h + '<p class="muted">무게를 입력하면 등급이 계산됩니다.</p>'; }
+    if (!a.level) { return h + '<p class="muted">체중을 입력하면 등급이 계산됩니다.</p>'; }
+    var L = a.level, n = L.idx + 1;
+    h += '<div class="lv-row"><span class="lv-badge lv-' + n + '">' + L.name + '</span>' +
+      '<span class="ratio-note">체중 대비 ' + fmtNum(L.ratio, 2) + '배 · ' + SEX_LABEL[a.s.sex] + ' ' +
+      fmtW(a.bwKg, a.unit) + ' 기준</span></div>' +
+      '<div class="gauge"><div class="gauge-track"><div class="gauge-fill lv-' + n + '" style="width:' +
+      fmtNum(Math.min(L.pct, 100), 1) + '%"></div></div>' + gaugeLabels() + '</div>' +
+      '<p class="pct-line">같은 조건에서 <b>상위 ' + fmtNum(L.top, 1) + '%</b> 수준으로 추정됩니다.</p>';
+    if (L.next) {
+      h += '<p class="next-line">다음 등급 <b>' + L.next.name + '</b>까지 <b>' + fmtW(L.next.needKg, a.unit) +
+        '</b> 더 필요합니다.</p>';
+    } else {
+      h += '<p class="next-line">최고 등급 구간에 도달했습니다. 지금의 폼과 관리 루틴을 유지하세요.</p>';
+    }
+    return h;
+  }
+
+  function hyperHTML(a) {
+    var h = '<h2>근비대 추천 무게</h2>';
+    if (!a.ok) { return h + '<p class="muted">무게를 입력하면 추천 무게가 표시됩니다.</p>'; }
+    var H = a.hyper, u = a.unit;
+    return h + '<div class="hyper-grid">' +
+      '<div><div class="k">추천 무게</div><div class="v">' + fmtNum(H.lo) + '~' + fmtNum(H.hi) + ' ' + u + '</div><div class="s">1RM의 65~80%</div></div>' +
+      '<div><div class="k">반복 · 세트</div><div class="v">8~12회 × 3~5</div><div class="s">세트 간 60~90초 휴식</div></div>' +
+      '</div>' +
+      '<p class="fine">대표 세트 예시: 1RM의 70%인 <b>' + fmtNum(H.mid) + ' ' + u + '</b>으로 10회를 3~4세트. ' +
+      '무게는 ' + H.step + ' ' + u + ' 단위로 반올림했고, 마지막 반복이 버거워지면 그 무게가 적당합니다.</p>';
+  }
+
+  function programsHTML(a, active) {
+    var h = '<h2>목적별 훈련 프로그램</h2><div class="prog-tabs" role="group" aria-label="훈련 목적">';
+    PROGRAM_ORDER.forEach(function (k) {
+      h += '<button type="button" data-p="' + k + '" class="p-' + k + (k === active ? ' active' : '') +
+        '" aria-pressed="' + (k === active) + '">' + PROGRAMS[k].tab + '</button>';
+    });
+    h += '</div>';
+    if (!a.ok) { return h + '<p class="muted">무게를 입력하면 프로그램이 계산됩니다.</p>'; }
+    var step = a.unit === 'lb' ? 5 : 2.5;
+    function range(p) {
+      return fmtNum(roundStep(fromKg(a.one * p.pct[0] / 100, a.unit), step)) + '~' +
+        fmtNum(roundStep(fromKg(a.one * p.pct[1] / 100, a.unit), step)) + ' ' + a.unit;
+    }
+    var P = PROGRAMS[active];
+    h += '<div class="prog-detail p-' + active + '"><div class="stat"><div class="k">목표 무게</div><div class="v">' + range(P) +
+      '</div><div class="s">1RM의 ' + P.pct[0] + '~' + P.pct[1] + '%</div></div>' +
+      '<div class="stat"><div class="k">권장 반복수</div><div class="v">' + P.reps + '</div><div class="s">세트당</div></div>' +
+      '<div class="stat"><div class="k">권장 세트수</div><div class="v">' + P.sets + '</div><div class="s">종목당</div></div>' +
+      '<div class="stat"><div class="k">휴식 시간</div><div class="v">' + P.rest + '</div><div class="s">세트 사이</div></div>' +
+      '<p class="prog-desc"><b>' + P.label + '</b> ' + P.desc + '</p></div>';
+    h += '<div class="table-scroll"><table class="data-table"><caption>세 가지 훈련 방식 비교</caption><thead><tr><th scope="col">구분</th>';
+    PROGRAM_ORDER.forEach(function (k) { h += '<th scope="col" class="c-' + k + '">' + PROGRAMS[k].tab + '</th>'; });
+    h += '</tr></thead><tbody>';
+    var rows = [
+      ['강도(%1RM)', function (p) { return p.pct[0] + '~' + p.pct[1] + '%'; }],
+      ['목표 무게', range],
+      ['반복수', function (p) { return p.reps; }],
+      ['세트수', function (p) { return p.sets; }],
+      ['휴식시간', function (p) { return p.rest; }]
+    ];
+    rows.forEach(function (row) {
+      h += '<tr><th scope="row">' + row[0] + '</th>';
+      PROGRAM_ORDER.forEach(function (k) { h += '<td>' + row[1](PROGRAMS[k]) + '</td>'; });
+      h += '</tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+
+  /* --- 3대 합계 패널 ------------------------------------------------- */
+  var BIG3_GOALS = [300, 400, 500];
+
+  function analyzeBig3(s) {
+    var sq = s.sq, bn = s.bn, dl = s.dl, bw = s.bw;
+    var total = sq + bn + dl;
+    var b = { s: s, total: total, ok: total > 0, bw: bw };
+    if (!b.ok) { return b; }
+    b.goals = BIG3_GOALS.map(function (g) { return { goal: g, left: Math.max(0, g - total), done: total >= g }; });
+    b.lifts = [['squat', sq], ['bench', bn], ['deadlift', dl]].map(function (x) {
+      return { key: x[0], name: LIFTS[x[0]].name, kg: x[1], lv: x[1] > 0 && bw > 0 ? levelInfo(x[1], bw, s.sex, x[0]) : null };
+    });
+    b.level = bw > 0 ? levelFromThresholds(total, bw, big3Thresholds(s.sex)) : null;
+    return b;
+  }
+
+  function big3HTML(b) {
+    var h = '<h2>3대 합계 결과</h2>';
+    if (!b.ok) { return h + '<p class="muted">스쿼트·벤치프레스·데드리프트 1RM을 입력하면 합계가 계산됩니다.</p>'; }
+    h += '<div class="hero-label">3대 합계</div><div class="hero-value">' + fmtNum(b.total) + '<span class="hero-unit">kg</span></div>';
+    if (b.level) {
+      var L = b.level, n = L.idx + 1;
+      h += '<div class="lv-row"><span class="lv-badge lv-' + n + '">' + L.name + '</span><span class="ratio-note">체중 대비 ' +
+        fmtNum(L.ratio, 2) + '배 · ' + SEX_LABEL[b.s.sex] + ' ' + fmtNum(b.bw) + ' kg 기준</span></div>' +
+        '<div class="gauge"><div class="gauge-track"><div class="gauge-fill lv-' + n + '" style="width:' +
+        fmtNum(Math.min(L.pct, 100), 1) + '%"></div></div>' + gaugeLabels() + '</div>' +
+        '<p class="pct-line">3대 합계 기준 <b>상위 ' + fmtNum(L.top, 1) + '%</b> 수준으로 추정됩니다.</p>';
+    } else {
+      h += '<p class="muted">체중을 입력하면 등급이 계산됩니다.</p>';
+    }
+    h += '<h3>목표까지 남은 무게</h3><ul class="goal-list">';
+    b.goals.forEach(function (g) {
+      h += '<li class="' + (g.done ? 'done' : '') + '"><span>3대 ' + g.goal + '</span><b>' +
+        (g.done ? '달성' : fmtNum(g.left) + ' kg 남음') + '</b></li>';
+    });
+    h += '</ul>';
+    h += '<div class="table-scroll"><table class="data-table"><caption>종목별 등급</caption><thead><tr><th scope="col">종목</th><th scope="col">1RM</th><th scope="col">체중 대비</th><th scope="col">등급</th></tr></thead><tbody>';
+    b.lifts.forEach(function (l) {
+      h += '<tr><th scope="row">' + l.name + '</th><td>' + fmtNum(l.kg) + ' kg</td><td>' +
+        (l.lv ? fmtNum(l.lv.ratio, 2) + '배' : '–') + '</td><td>' + (l.lv ? l.lv.name : '–') + '</td></tr>';
+    });
+    return h + '</tbody></table></div><p class="fine">3대 합계 등급은 세 종목 기준 배율을 합산한 값으로 추정한 참고용 지표입니다.</p>';
+  }
+
+  /* --- 퍼센트표 패널 ------------------------------------------------- */
+  function repsLabel(p) {
+    var r = repsAtPct(p / 100), a = Math.round(r[0]), b = Math.round(r[1]);
+    var lo = Math.min(a, b), hi = Math.max(a, b);
+    if (p === 100) { return '1회'; }
+    if (lo >= 12) { return '12회 이상'; }
+    return lo === hi ? lo + '회' : lo + '~' + hi + '회';
+  }
+
+  function chartHTML(c) {
+    var h = '<h2>1RM 퍼센트표 (50~100%)</h2>';
+    if (!(c.oneKg > 0)) { return h + '<p class="muted">1RM을 입력하면 표가 채워집니다.</p>'; }
+    var step = c.unit === 'lb' ? 5 : 2.5;
+    h += '<div class="table-scroll"><table class="data-table pct-table"><caption>1RM ' + fmtNum(c.one) + ' ' + c.unit +
+      ' 기준 퍼센트별 무게</caption><thead><tr><th scope="col">강도</th><th scope="col">무게</th>' +
+      '<th scope="col">추정 최대 반복</th><th scope="col">권장 세트×반복</th><th scope="col">용도</th></tr></thead><tbody>';
+    PCT_ROWS.forEach(function (p) {
+      var kg = c.oneKg * p / 100, info = PCT_INFO[p];
+      var shown = p === 100 ? c.one : roundStep(fromKg(kg, c.unit), step); // 100%는 입력한 1RM 그대로
+      h += '<tr class="' + (p === 80 || p === 90 ? 'hl' : '') + '"><th scope="row">' + p + '%</th><td>' +
+        fmtNum(shown) + ' ' + c.unit + '</td><td>' + repsLabel(p) + '</td><td>' +
+        info.rec + '</td><td>' + info.use + '</td></tr>';
+    });
+    return h + '</tbody></table></div><p class="fine">무게는 ' + step + ' ' + c.unit +
+      ' 단위로 반올림했습니다. 추정 최대 반복은 Epley·Brzycki 공식 범위이며 개인차가 있는 참고용 수치입니다.</p>';
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 브라우저: 위젯 하이드레이션                                              */
+  /* ------------------------------------------------------------------ */
+  function num(v, def) { var n = parseFloat(v); return isFinite(n) ? n : def; }
+
+  function parseQuery() {
+    var out = {};
+    if (typeof location === 'undefined' || !location.search) { return out; }
+    var p = new URLSearchParams(location.search);
+    if (LIFTS[p.get('lift')]) { out.lift = p.get('lift'); }
+    var w = num(p.get('w'), NaN), r = parseInt(p.get('r'), 10), bw = num(p.get('bw'), NaN);
+    if (w > 0 && w <= 2000) { out.w = w; }
+    if (r >= 1 && r <= 12) { out.r = r; }
+    if (bw > 0 && bw <= 500) { out.bw = bw; }
+    if (p.get('sex') === 'male' || p.get('sex') === 'female') { out.sex = p.get('sex'); }
+    if (p.get('u') === 'lb') { out.unit = 'lb'; }
+    if (FORMULA_LABEL[p.get('f')]) { out.formula = p.get('f'); }
+    return out;
+  }
+
+  function copyText(text, btn) {
+    var done = function () {
+      var old = btn.getAttribute('data-label') || btn.textContent;
+      btn.setAttribute('data-label', old);
+      btn.textContent = '링크 복사됨';
+      setTimeout(function () { btn.textContent = old; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { window.prompt('링크를 복사하세요', text); });
+    } else { window.prompt('링크를 복사하세요', text); }
+  }
+
+  function setActive(container, attr, value) {
+    var btns = container.querySelectorAll('button[' + attr + ']');
+    for (var i = 0; i < btns.length; i++) {
+      var on = btns[i].getAttribute(attr) === value;
+      btns[i].classList.toggle('active', on);
+      btns[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+
+  function initWidget(el) {
+    var d = el.dataset;
+    var st = {
+      lift: LIFTS[d.lift] ? d.lift : 'bench', w: num(d.w, 100), r: parseInt(d.r, 10) || 5,
+      sex: d.sex === 'female' ? 'female' : 'male', bw: num(d.bw, 75),
+      unit: d.unit === 'lb' ? 'lb' : 'kg', formula: FORMULA_LABEL[d.formula] ? d.formula : 'avg',
+      program: 'power'
+    };
+    var q = parseQuery(), k;
+    for (k in q) { if (q.hasOwnProperty(k)) { st[k] = q[k]; } }
+    var hasPrograms = el.hasAttribute('data-programs');
+
+    var out = {}, names = ['hero', 'table', 'level', 'hyper', 'programs'];
+    names.forEach(function (n) { out[n] = el.querySelector('[data-out="' + n + '"]'); });
+    var inW = el.querySelector('[data-in="w"]'), inR = el.querySelector('[data-in="r"]'),
+        inBw = el.querySelector('[data-in="bw"]'), rBadge = el.querySelector('[data-out="rbadge"]');
+
+    function syncControls() {
+      setActive(el, 'data-lift', st.lift);
+      setActive(el, 'data-unit', st.unit);
+      setActive(el, 'data-formula', st.formula);
+      setActive(el, 'data-sex', st.sex);
+      inW.value = st.w; inR.value = st.r; inBw.value = st.bw; rBadge.textContent = st.r;
+    }
+
+    function render() {
+      var a = analyze(st);
+      out.hero.innerHTML = heroHTML(a);
+      out.table.innerHTML = tableHTML(a);
+      out.level.innerHTML = levelHTML(a);
+      out.hyper.innerHTML = hyperHTML(a);
+      if (hasPrograms && out.programs) { out.programs.innerHTML = programsHTML(a, st.program); }
+    }
+
+    function queryString() {
+      var p = ['lift=' + st.lift, 'w=' + fmtNum(st.w, 2).replace(/,/g, ''), 'r=' + st.r,
+        'sex=' + st.sex, 'bw=' + fmtNum(st.bw, 2).replace(/,/g, '')];
+      if (st.unit === 'lb') { p.push('u=lb'); }
+      if (st.formula !== 'avg') { p.push('f=' + st.formula); }
+      return p.join('&');
+    }
+
+    function touchUrl() {
+      if (window.history && history.replaceState) {
+        history.replaceState(null, '', location.pathname + '?' + queryString());
+      }
+    }
+
+    function update(patch) {
+      for (var key in patch) { if (patch.hasOwnProperty(key)) { st[key] = patch[key]; } }
+      syncControls(); render(); touchUrl();
+    }
+
+    // 페이지 안의 "예시" 버튼이 호출: 종목·무게(kg)·횟수를 채운다
+    el._rmPreset = function (lift, w, r) {
+      var bw = st.unit === 'kg' ? st.bw : round(fromKg(toKg(st.bw, st.unit), 'kg'), 1);
+      update({ lift: lift, w: w, r: r, unit: 'kg', bw: bw });
+    };
+
+    el.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('button') : null;
+      if (!b || !el.contains(b)) { return; }
+      if (b.hasAttribute('data-lift')) { update({ lift: b.getAttribute('data-lift') }); }
+      else if (b.hasAttribute('data-formula')) { update({ formula: b.getAttribute('data-formula') }); }
+      else if (b.hasAttribute('data-sex')) { update({ sex: b.getAttribute('data-sex') }); }
+      else if (b.hasAttribute('data-unit')) {
+        var to = b.getAttribute('data-unit');
+        if (to !== st.unit) {
+          var f = st.unit, t = to;
+          update({ unit: to, w: round(fromKg(toKg(st.w, f), t), 1), bw: round(fromKg(toKg(st.bw, f), t), 1) });
+        }
+      }
+      else if (b.hasAttribute('data-p')) { st.program = b.getAttribute('data-p'); render(); }
+      else if (b.getAttribute('data-act') === 'share') {
+        copyText(location.origin + location.pathname + '?' + queryString(), b);
+      }
+    });
+
+    el.addEventListener('input', function (ev) {
+      var t = ev.target, key = t.getAttribute && t.getAttribute('data-in');
+      if (key === 'w') { update({ w: Math.max(0, num(t.value, 0)) }); }
+      else if (key === 'bw') { update({ bw: Math.max(0, num(t.value, 0)) }); }
+      else if (key === 'r') { update({ r: parseInt(t.value, 10) || 1 }); }
+    });
+
+    syncControls();
+    render(); // 프리렌더된 결과와 동일한 마크업이므로 레이아웃 이동이 없다
+    if (Object.keys(q).length) { /* 공유 링크로 들어온 경우: 주소는 그대로 유지 */ }
+  }
+
+  function initBig3(el) {
+    var d = el.dataset;
+    var st = { sq: num(d.sq, 0), bn: num(d.bn, 0), dl: num(d.dl, 0), bw: num(d.bw, 75), sex: d.sex === 'female' ? 'female' : 'male' };
+    var p = typeof location !== 'undefined' && location.search ? new URLSearchParams(location.search) : null;
+    if (p) {
+      ['sq', 'bn', 'dl', 'bw'].forEach(function (key) { var v = num(p.get(key), NaN); if (v > 0 && v <= 1500) { st[key] = v; } });
+      if (p.get('sex') === 'male' || p.get('sex') === 'female') { st.sex = p.get('sex'); }
+    }
+    var out = el.querySelector('[data-out="big3"]');
+    var ins = { sq: el.querySelector('[data-in="sq"]'), bn: el.querySelector('[data-in="bn"]'),
+                dl: el.querySelector('[data-in="dl"]'), bw: el.querySelector('[data-in="bw"]') };
+    function sync() { for (var k in ins) { if (ins.hasOwnProperty(k)) { ins[k].value = st[k]; } } setActive(el, 'data-sex', st.sex); }
+    function render() { out.innerHTML = big3HTML(analyzeBig3(st)); }
+    function qs() { return 'sq=' + st.sq + '&bn=' + st.bn + '&dl=' + st.dl + '&bw=' + st.bw + '&sex=' + st.sex; }
+    el.addEventListener('input', function (ev) {
+      var key = ev.target.getAttribute && ev.target.getAttribute('data-in');
+      if (key && st.hasOwnProperty(key)) { st[key] = Math.max(0, num(ev.target.value, 0)); render(); }
+    });
+    el.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('button') : null;
+      if (!b) { return; }
+      if (b.hasAttribute('data-sex')) { st.sex = b.getAttribute('data-sex'); sync(); render(); }
+      else if (b.getAttribute('data-act') === 'share') { copyText(location.origin + location.pathname + '?' + qs(), b); }
+    });
+    sync(); render();
+  }
+
+  function initChart(el) {
+    var d = el.dataset;
+    var st = { one: num(d.one, 100), unit: d.unit === 'lb' ? 'lb' : 'kg' };
+    var p = typeof location !== 'undefined' && location.search ? new URLSearchParams(location.search) : null;
+    if (p) {
+      var v = num(p.get('one'), NaN); if (v > 0 && v <= 2000) { st.one = v; }
+      if (p.get('u') === 'lb') { st.unit = 'lb'; }
+    }
+    var out = el.querySelector('[data-out="chart"]'), inp = el.querySelector('[data-in="one"]');
+    function sync() { inp.value = st.one; setActive(el, 'data-unit', st.unit); }
+    function render() { out.innerHTML = chartHTML({ one: st.one, oneKg: toKg(st.one, st.unit), unit: st.unit }); }
+    el.addEventListener('input', function (ev) {
+      if (ev.target.getAttribute && ev.target.getAttribute('data-in') === 'one') { st.one = Math.max(0, num(ev.target.value, 0)); render(); }
+    });
+    el.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('button') : null;
+      if (b && b.hasAttribute('data-unit') && b.getAttribute('data-unit') !== st.unit) {
+        var to = b.getAttribute('data-unit');
+        st.one = round(fromKg(toKg(st.one, st.unit), to), 1); st.unit = to; sync(); render();
+      }
+    });
+    sync(); render();
+  }
+
+  function autoInit() {
+    if (typeof document === 'undefined') { return; }
+    document.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('[data-preset]') : null;
+      if (!b) { return; }
+      var parts = b.getAttribute('data-preset').split(':');
+      var w = document.querySelector('[data-rm-widget]');
+      if (!w || !w._rmPreset || !LIFTS[parts[0]]) { return; }
+      w._rmPreset(parts[0], num(parts[1], 100), parseInt(parts[2], 10) || 5);
+      w.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    var run = function () {
+      var i, list;
+      list = document.querySelectorAll('[data-rm-widget]'); for (i = 0; i < list.length; i++) { initWidget(list[i]); }
+      list = document.querySelectorAll('[data-rm-big3]');   for (i = 0; i < list.length; i++) { initBig3(list[i]); }
+      list = document.querySelectorAll('[data-rm-chart]');  for (i = 0; i < list.length; i++) { initChart(list[i]); }
+    };
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', run); } else { run(); }
+  }
+
+  return {
+    KG_PER_LB: KG_PER_LB, LIFTS: LIFTS, LIFT_ORDER: LIFT_ORDER, STANDARDS: STANDARDS, SEX_LABEL: SEX_LABEL,
+    LEVELS: LEVELS, FORMULA_LABEL: FORMULA_LABEL, PROGRAMS: PROGRAMS, PROGRAM_ORDER: PROGRAM_ORDER,
+    PCT_ROWS: PCT_ROWS, PCT_INFO: PCT_INFO, BIG3_GOALS: BIG3_GOALS,
+    toKg: toKg, fromKg: fromKg, round: round, roundStep: roundStep, fmtNum: fmtNum, fmtW: fmtW,
+    epley: epley, brzycki: brzycki, epleyAt: epleyAt, brzyckiAt: brzyckiAt, oneRM: oneRM, weightAt: weightAt,
+    repsAtPct: repsAtPct, repsLabel: repsLabel, levelInfo: levelInfo, big3Thresholds: big3Thresholds,
+    analyze: analyze, analyzeBig3: analyzeBig3,
+    heroHTML: heroHTML, tableHTML: tableHTML, levelHTML: levelHTML, hyperHTML: hyperHTML,
+    programsHTML: programsHTML, big3HTML: big3HTML, chartHTML: chartHTML,
+    autoInit: autoInit
+  };
+});
+</script>
+</body>
+</html>
